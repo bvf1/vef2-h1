@@ -1,0 +1,54 @@
+{
+  "menu": {
+    "products": {
+      "href": "/menu",
+      "methods": [
+        "GET",
+        "POST"
+      ]
+    },
+    "product": {
+      "href": "/tv/{id}",
+      "methods": [
+        "GET",
+        "PATCH",
+        "DELETE"
+      ]
+    }
+  },
+
+  "users": {
+    "users": {
+      "href": "/users",
+      "methods": [
+        "GET"
+      ]
+    },
+    "user": {
+      "href": "/users/{id}",
+      "methods": [
+        "GET",
+        "PATCH"
+      ]
+    },
+    "register": {
+      "href": "/users/register",
+      "methods": [
+        "POST"
+      ]
+    },
+    "login": {
+      "href": "/users/login",
+      "methods": [
+        "POST"
+      ]
+    },
+    "me": {
+      "href": "/users/me",
+      "methods": [
+        "GET",
+        "PATCH"
+      ]
+    }
+  }
+}
