@@ -1,4 +1,4 @@
-# Vefforritun 2, 2021, hópverkefni 1
+# Vefforritun 2, 2022, hópverkefni 1
 
 [Kynning í fyrirlestri](https://youtu.be/W0k01_KRE4I).
 
@@ -13,6 +13,14 @@ Fyrir starfsmenn veitingastaðs/eldhús sem eru innskráðir er hægt að:
 * sjá opnar pantanir
 * breyta stöðum á pöntunum
 * vinna með matseðil
+
+## Notandi
+
+Tilbúinn admin notandi:
+
+* username: admin
+* password: 1234567890
+
 
 ## Töflur
 
