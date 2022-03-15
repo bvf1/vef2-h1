@@ -1,10 +1,11 @@
--- TODO ætti e.t.v. að vera í sér scriptu svo við droppum ekki „óvart“
-
-DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS orderLines;
+DROP TABLE IF EXISTS orderStates;
 DROP TABLE IF EXISTS products;
-
--- Allir foreign key constraints eru skilgreindir með „ON DELETE CASCADE“ þ.a. þeim færslum sem
--- vísað er í verður *eytt* þegar gögnum sem vísa í þær er eytt
+DROP TABLE IF EXISTS carts;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS categories;
+DROP TYPE IF EXISTS orderState;
 
 CREATE TABLE categories (
   id SERIAL PRIMARY KEY,
@@ -13,14 +14,14 @@ CREATE TABLE categories (
 
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
-  name VARCHAR(128) NOT NULL,
-  air_date TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  in_production BOOLEAN DEFAULT false,
-  tagline TEXT,
+  title VARCHAR(128) NOT NULL,
+  price INTEGER NOT NULL,
+  description TEXT NOT NULL,
   image VARCHAR(255) NOT NULL,
-  description TEXT,
-  language VARCHAR(2) NOT NULL,
-  network VARCHAR(128),
+  category INTEGER NOT NULL,
+  created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
   url VARCHAR(255),
   constraint category FOREIGN KEY (category) REFERENCES categories (id)
 );
@@ -37,19 +38,21 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE orderLines (
-  constraint product FOREIGN KEY (product) REFERENCES products (id),
-  constraint cart FOREIGN KEY (cart) REFERENCES carts (id),
+  productID INTEGER NOT NULL,
+  cardID UUID NOT NULL,
+  constraint productID FOREIGN KEY (productID) REFERENCES products (id),
+  constraint cardID FOREIGN KEY (cardID) REFERENCES carts (id),
   quantity SERIAL
 );
 
-create type orderState as enum('NEW', 'PREPARE', 'COOKING' 'READY', 'FINISHED');
+CREATE TYPE orderState AS ENUM('NEW', 'PREPARE', 'COOKING', 'READY', 'FINISHED');
 
 CREATE TABLE orderStates (
-  constraint order FOREIGN KEY (order) REFERENCES orders (id),
+  orderID UUID NOT NULL,
+  constraint orderID FOREIGN KEY (orderID) REFERENCES orders (id),
   stateOfOrder orderState DEFAULT 'NEW',
   created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
 
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
