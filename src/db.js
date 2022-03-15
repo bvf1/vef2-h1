@@ -22,6 +22,27 @@ pool.on('error', (err) => {
   process.exit(-1);
 });
 
+
+/**
+ * Catagory.
+ * @typedef {Object} Catagory
+ * @property {number} id -ID of product
+ * @property {String} title name of product
+ */
+
+/**
+ * Product.
+ * @typedef {Object} Product
+ * @property {number | null} id -ID of product, if defined
+ * @property {String} title name of product
+ * @property {integer} price price of product
+ * @property {String} description description of product
+ * @property {String} image path to image
+ * @property {number} category id from category
+ * @property {Date} created date product was added
+ * @property {Date} updated date product was updated
+ */
+
 /**
  * Serie.
  * @typedef {Object} Serie
@@ -121,6 +142,76 @@ export async function pagedQuery(
 export async function end() {
   await pool.end();
 }
+
+/**
+ *
+ * @param {Category} categorie category to create
+ * @returns {Categorie} category created, with ID
+ */
+export async function insertCategory({title}) {
+  const q = `
+  INSERT INTO
+    categories
+    (title)
+  VALUES
+    ($1)
+  RETURNING *
+  `;
+
+  const values = [xss(title)];
+
+  try {
+    const result = await query(q, values);
+    return result.rows[0];
+  } catch (e) {
+    logger.error('Error inserting product', e);
+  }
+
+  return null;
+}
+
+
+
+
+/**
+ * Insert a product
+ * @param {Product} product Product to create
+ * @returns {Product} Product created, with ID
+ */
+/*
+export async function insertProduct({
+  title,
+  price,
+  description,
+  image,
+  category,
+}) {
+  const q = `
+    INSERT INTO
+      products
+      (title, price, description, image, category, created, updated)
+    VALUES
+      ($1, $2, $3, $4, $5, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+    RETURNING
+      *
+    `;
+  const values = [
+    xss(title),
+    price,
+    xss(description),
+    xss(image),
+    category,
+  ];
+  try {
+    const result = await query(q, values);
+    return result.rows[0];
+  } catch (e) {
+    logger.error('Error inserting product', e);
+  }
+
+  return null;
+}
+*/
 
 // TODO refactor
 export async function conditionalUpdate(table, id, fields, values) {
