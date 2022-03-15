@@ -1,10 +1,10 @@
-DROP TABLE IF EXISTS products;
-DROP TABLE IF EXISTS categories;
-DROP TABLE IF EXISTS carts;
-DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS orderLines;
 DROP TABLE IF EXISTS orderStates;
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS carts;
+DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS users;
+DROP TABLE IF EXISTS categories;
 DROP TYPE IF EXISTS orderState;
 
 CREATE TABLE categories (
@@ -38,15 +38,18 @@ CREATE TABLE orders (
 );
 
 CREATE TABLE orderLines (
-  constraint product FOREIGN KEY (product) REFERENCES products (id),
-  constraint cart FOREIGN KEY (cartid) REFERENCES carts (id),
+  productID INTEGER NOT NULL,
+  cardID UUID NOT NULL,
+  constraint productID FOREIGN KEY (productID) REFERENCES products (id),
+  constraint cardID FOREIGN KEY (cardID) REFERENCES carts (id),
   quantity SERIAL
 );
 
 CREATE TYPE orderState AS ENUM('NEW', 'PREPARE', 'COOKING', 'READY', 'FINISHED');
 
 CREATE TABLE orderStates (
-  constraint orderid FOREIGN KEY (orderid) REFERENCES orders (id),
+  orderID UUID NOT NULL,
+  constraint orderID FOREIGN KEY (orderID) REFERENCES orders (id),
   stateOfOrder orderState DEFAULT 'NEW',
   created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
