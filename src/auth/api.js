@@ -28,17 +28,15 @@ export const router = express.Router();
 
 async function registerRoute(req, res) {
   const { username, email, password = '' } = req.body;
+  logger.debug(username);
 
   const result = await createUser(username, email, password);
-
-  delete result.password;
 
   return res.status(201).json(result);
 }
 
 async function loginRoute(req, res) {
   const { username } = req.body;
-
   const user = await findByUsername(username);
 
   if (!user) {
@@ -51,9 +49,7 @@ async function loginRoute(req, res) {
   delete user.password;
 
   return res.json({
-    user,
     token,
-    expiresIn: tokenOptions.expiresIn,
   });
 }
 
@@ -77,7 +73,6 @@ async function updateCurrentUserRoute(req, res) {
   const user = await findById(id);
 
   if (!user) {
-    // shouldn't happen
     logger.error('Unable to update user by id', id);
     return res.status(500).json(null);
   }

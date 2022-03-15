@@ -146,16 +146,41 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
 
 * `/users/`
   * `GET` skilar síðu af notendum, aðeins ef notandi sem framkvæmir er stjórnandi
+
+  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3MzQ4OTk2LCJleHAiOjE2NDczNTI1OTZ9.FdyUQhkT0NsydoafKrNUPdRbvhoCImOuQ42jqWQNE30" http://localhost:3001/users
+
 * `/users/:id`
   * `GET` skilar notanda, aðeins ef notandi sem framkvæmir er stjórnandi
+
+  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3MzQ4OTk2LCJleHAiOjE2NDczNTI1OTZ9.FdyUQhkT0NsydoafKrNUPdRbvhoCImOuQ42jqWQNE30" http://localhost:3001/users/2
+
+
   * `PATCH` breytir hvort notandi sé stjórnandi eða ekki, aðeins ef notandi sem framkvæmir er stjórnandi og er ekki að breyta sér sjálfum
+
+  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3MzUzMDk2LCJleHAiOjE2NDczNTY2OTZ9.xg9CQssTbZRFRFvWdy7pkY698Xo-ea5-jaFR3pPow04" -d '{ "admin": "true"}' -X PATCH http://localhost:3001/users/2
+
+
 * `/users/register`
   * `POST` staðfestir og býr til notanda. Skilar auðkenni og netfangi. Notandi sem búinn er til skal aldrei vera stjórnandi
+
+  > curl -vH "Content-Type: application/json" -d '{"username": "Tommi Tómatur","email": "tommi@tomatur.is","password": "1234567890"}' http://localhost:3001/users/register
+
 * `/users/login`
   * `POST` með netfangi (eða notandanafni) og lykilorði skilar token ef gögn rétt
+
+  > curl -vH "Content-Type: application/json" -d '{ "username": "admin", "password": "1234567890"}' POST http://localhost:3001/users/login
+
+"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3MzQ0MDcxLCJleHAiOjE2NDczNDc2NzF9.CFsKbGNmVFASOFO4CVL20OvkLIATz7dwW_6klYLy9cc"
+
 * `/users/me`
   * `GET` skilar upplýsingum um notanda sem á token, auðkenni og netfangi, aðeins ef notandi innskráður
+
+  >  curl -H 'Accept: application/json' "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3MzQ0MDcxLCJleHAiOjE2NDczNDc2NzF9.CFsKbGNmVFASOFO4CVL20OvkLIATz7dwW_6klYLy9cc" http://localhost:3001/users/me
+
   * `PATCH` uppfærir netfang, lykilorð eða bæði ef gögn rétt, aðeins ef notandi innskráður
+
+  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3MzQ4OTk2LCJleHAiOjE2NDczNTI1OTZ9.FdyUQhkT0NsydoafKrNUPdRbvhoCImOuQ42jqWQNE30" -d '{ "email": "admin@admin.org"}' -X PATCH http://localhost:3001/users/me
+
 
 Aldrei skal skila eða sýna hash fyrir lykilorð.
 

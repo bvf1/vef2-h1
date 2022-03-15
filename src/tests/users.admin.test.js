@@ -72,7 +72,7 @@ describe('/users admin', () => {
 
   test('GET /users/1 requires admin, success', async () => {
     const token = await loginAsHardcodedAdminAndReturnToken();
-    expect(token).toBeTruthy();
+    expect(token).toBeFalse();
 
     const { result, status } = await fetchAndParse('/users/1', token);
 

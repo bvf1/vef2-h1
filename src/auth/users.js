@@ -23,7 +23,7 @@ export async function createUser(username, email, password) {
       users (username, email, password)
     VALUES
       ($1, $2, $3)
-    RETURNING *`;
+    RETURNING username, email`;
 
   const values = [xss(username), xss(email), hashedPassword];
   const result = await query(

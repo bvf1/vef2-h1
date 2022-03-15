@@ -8,13 +8,11 @@ import { requireAuthentication, requireAdmin, addUserIfAuthenticated } from '../
 import { catchErrors } from '../utils/catchErrors.js';
 import { readFile } from '../utils/fs-helpers.js';
 
-
 import {
   listUsers,
   listUser,
   updateUser,
 } from './users.js';
-
 
 import {
   adminValidator,
@@ -91,15 +89,14 @@ router.get('/', async (req, res) => {
  *  RESULT, // Eitthvað sem sendir svar til client ef allt OK
  * );
  */
- router.get(
+router.get(
   '/menu',
   pagingQuerystringValidator,
   validationCheck,
   catchErrors(listProducts),
 );
 
-/* user auth routes */
-
+/* admin auth routes */
 
 router.get(
   '/users',
@@ -116,3 +113,14 @@ router.get(
   validationCheck,
   returnResource,
 );
+
+router.patch(
+  '/users/:id',
+  requireAdmin,
+  validateResourceExists(listUser),
+  adminValidator,
+  validationCheck,
+  catchErrors(updateUser),
+);
+
+/* user auth routes */
