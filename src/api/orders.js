@@ -72,6 +72,34 @@ export async function listOrderStatus(orderId) {
   return orderStatus;
 }
 
+export async function updateOrderStatus(req, res) {
+  const { status } = req.body;
+  const orderId = req.params.id;
+
+  try {
+    const updatedStatus = await singleQuery(
+      `
+      UPDATE
+        userstates
+      SET
+        stateoforder = $1
+        created
+      WHERE
+          orderid = $2
+      `,
+      [status, orderId],
+    );
+    return res.status(200).json(updatedStatus);
+  } catch (e) {
+    logger.error(
+      `unable to change status to "${status}" for user "${orderId}"`,
+      e,
+    );
+  }
+
+  return res.status(500).json(null);
+}
+
 export async function createOrder(req, res) {
   const { name } = req.body;
   const q = `

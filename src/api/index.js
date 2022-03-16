@@ -15,7 +15,7 @@ import { readFile } from '../utils/fs-helpers.js';
 import { listUsers, listUser, updateUser } from './users.js';
 
 import {
-  listOrders, listOrder, createOrder, listOrderStatus,
+  listOrders, listOrder, createOrder, listOrderStatus, updateOrderStatus,
 } from './orders.js';
 
 import {
@@ -117,7 +117,6 @@ router.get(
 
 router.post(
   '/orders',
-  validateResourceExists(listUser),
   validationCheck,
   catchErrors(createOrder),
 );
@@ -155,6 +154,14 @@ router.get(
   pagingQuerystringValidator,
   validationCheck,
   listOrders,
+);
+
+router.post(
+  '/orders/:id/status',
+  requireAdmin,
+  validateResourceExists(listOrder),
+  validationCheck,
+  catchErrors(updateOrderStatus),
 );
 
 /* user auth routes */
