@@ -15,7 +15,7 @@ import { readFile } from '../utils/fs-helpers.js';
 import { listUsers, listUser, updateUser } from './users.js';
 
 import {
-  listOrders, listOrder, createOrder,
+  listOrders, listOrder, createOrder, listOrderStatus,
 } from './orders.js';
 
 import {
@@ -99,6 +99,13 @@ router.get(
   pagingQuerystringValidator,
   validationCheck,
   catchErrors(listProducts),
+);
+
+router.get(
+  '/orders/:id/status',
+  validateResourceExists(listOrderStatus),
+  validationCheck,
+  returnResource,
 );
 
 router.get(

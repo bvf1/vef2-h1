@@ -48,6 +48,30 @@ export async function listOrder(orderId) {
   return order;
 }
 
+export async function listOrderStatus(orderId) {
+  const orderStatus = await singleQuery(
+    `
+    SELECT
+      o.name, os.stateoforder, os.created
+    FROM
+        orders AS o
+    LEFT JOIN
+        orderstates as os
+    ON
+        o.id = os.orderid
+    WHERE
+        id = $1
+    `,
+    [orderId],
+  );
+
+  if (!orderStatus) {
+    return null;
+  }
+
+  return orderStatus;
+}
+
 export async function createOrder(req, res) {
   const { name } = req.body;
   const q = `
