@@ -22,22 +22,17 @@ import {
 
 import {
   adminValidator,
-  episodeIdValidator,
-  episodeValidators,
-  nameValidator,
   pagingQuerystringValidator,
-  seasonIdValidator,
-  serieIdValidator,
-  seasonValidators,
-  serieValidators,
   validateResourceExists,
   validateResourceNotExists,
   atLeastOneBodyValueValidator,
-  validateRating,
   validateState,
+  productValidators,
+  categoryValidator,
 } from '../validation/validators.js';
 import { validationCheck } from '../validation/helpers.js';
-import { listProducts } from './products.js';
+import { createProduct, listProducts } from './products.js';
+import { createCategory, listCategories } from './categories.js';
 
 /**
  * Langt skjal! En hér erum við að útbúa hverja og einasta route (fyrir utan
@@ -104,6 +99,13 @@ router.get(
 );
 
 router.get(
+  '/categories',
+  pagingQuerystringValidator,
+  validationCheck,
+  catchErrors(listCategories),
+);
+
+router.get(
   '/orders/:id',
   validateResourceExists(listOrder),
   validationCheck,
@@ -142,6 +144,22 @@ router.patch(
   adminValidator,
   validationCheck,
   catchErrors(updateUser),
+);
+
+router.post(
+  '/menu',
+  requireAdmin,
+  productValidators,
+  validationCheck,
+  catchErrors(createProduct),
+);
+
+router.post(
+  '/categories',
+  requireAdmin,
+  categoryValidator,
+  validationCheck,
+  catchErrors(createCategory),
 );
 
 router.get(

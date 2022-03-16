@@ -140,31 +140,67 @@ export async function end() {
 }
 
 /**
- *
- * @param {Category} categorie category to create
- * @returns {Categorie} category created, with ID
+ * Insert a category
+ * @param {Category} category Category to create
+ * @returns {Category} Category created, with ID
  */
-export async function insertCategory({ title }) {
+
+export async function insertCategory({
+  title,
+}) {
   const q = `
-  INSERT INTO
-    categories
+    INSERT INTO categories
     (title)
-  VALUES
-    ($1)
-  RETURNING *
-  `;
-
+    VALUES ($1)
+    RETURNING *`;
   const values = [xss(title)];
-
   try {
     const result = await query(q, values);
     return result.rows[0];
   } catch (e) {
-    logger.error('Error inserting product', e);
+    logger.error('Error inserting category', e);
   }
 
   return null;
 }
+
+export async function listCategoryNames() {
+  const q = `
+    SELECT
+      title
+    FROM
+      categories
+  `;
+  try {
+    const result = await query(q);
+    return result.rows;
+  } catch (e) {
+    logger.error('Error getting categories', e);
+  }
+
+  return null;
+}
+
+export async function listCategoryByTitle({title}) {
+  const category = await singleQuery(
+    `
+      SELECT
+        *
+      FROM
+        categories
+      WHERE
+        title = $1
+    `,
+    [title],
+  );
+
+  if (!category) {
+    return null;
+  }
+
+  return category;
+}
+
 
 /**
  * Insert a product
@@ -175,7 +211,7 @@ export async function insertProduct({
   title,
   price,
   description,
-  image,
+  image = '',
   category,
 }) {
   const q = `
@@ -193,6 +229,23 @@ export async function insertProduct({
     return result.rows[0];
   } catch (e) {
     logger.error('Error inserting product', e);
+  }
+
+  return null;
+}
+
+export async function listProductNames() {
+  const q = `
+    SELECT
+      title
+    FROM
+      products
+  `;
+  try {
+    const result = await query(q);
+    return result.rows;
+  } catch (e) {
+    logger.error('Error getting product names', e);
   }
 
   return null;

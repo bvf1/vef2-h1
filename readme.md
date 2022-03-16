@@ -111,7 +111,10 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
   > curl -H 'Accept: application/json' http://localhost:3001/menu
 
   - `POST` býr til nýja vöru á matseðil ef hún er gild og notandi hefur rétt til að búa til vöru, aðeins ef notandi sem framkvæmir er stjórnandi
-  
+
+  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDY4MDQxLCJleHAiOjE2NDc4MjgwNDF9.kDRdrgHSFxD9sCtGf6VgnY3yZOL3PiTXPAXyB29Zx9k" -d '{ "title": "apple", "price": 15, "description": "red apple", "category": "fruit"}'  http://localhost:3001/menu
+
+
   - Bæði er í lagi að taka við gögnum sem `form data` þar sem bæði mynd og gögn eru send inn, eða sem `JSON` og útfæra annað route sem tekur við mynd og festir við vöru, t.d. `POST /menu/{id}/image`
 - `/menu?category={category}`
   - `GET` Skilar síðu af vörum í flokk, raðað í dagsetningar röð, nýjustu vörur fyrst
@@ -124,7 +127,13 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
   - `DELETE` eyðir vöru, aðeins ef notandi sem framkvæmir er stjórnandi
 - `/categories`
   - `GET` skilar síðu af flokkum
+
+    > curl -H 'Accept: application/json' http://localhost:3001/categories
+
   - `POST` býr til flokk ef gildur og skilar, aðeins ef notandi sem framkvæmir er stjórnandi
+
+  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDY4MDQxLCJleHAiOjE2NDc4MjgwNDF9.kDRdrgHSFxD9sCtGf6VgnY3yZOL3PiTXPAXyB29Zx9k" -d '{ "title": "appliances"}'  http://localhost:3001/categories
+
 - `/categories/:id`
   - `PATCH` uppfærir flokk, aðeins ef notandi sem framkvæmir er stjórnandi
   - `DELETE` eyðir flokk, aðeins ef notandi sem framkvæmir er stjórnandi

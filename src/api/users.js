@@ -25,7 +25,7 @@ export async function listUsers(req, res) {
 }
 
 export async function listUser(userId) {
-  const episode = await singleQuery(
+  const user = await singleQuery(
     `
       SELECT
         id, username, email, admin, created, updated
@@ -37,11 +37,11 @@ export async function listUser(userId) {
     [userId],
   );
 
-  if (!episode) {
+  if (!user) {
     return null;
   }
 
-  return episode;
+  return user;
 }
 
 export async function updateUser(req, res) {

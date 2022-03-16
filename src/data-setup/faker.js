@@ -56,6 +56,7 @@ let cd = 0;
 for (let i = 0; i < catagoriesNumber; i += 1) {
   const result = insertIntoCategory(i);
   for (let j = 0; j < productNumber; j += 1) {
-    insertIntoProduct(cd += 1, result);
+    insertIntoProduct(cd, result);
+    cd += 1;
   }
 }

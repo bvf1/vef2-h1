@@ -1,26 +1,27 @@
 import xss from 'xss';
 import {
   query,
+  singleQuery,
   pagedQuery,
+  deleteQuery,
+  conditionalUpdate,
   insertCategory,
   insertProduct,
   listCategoryNames,
-  listCategoryByTitle,
 } from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { uploadImage } from '../utils/cloudinary.js';
 import { logger } from '../utils/logger.js';
 import { listOrders } from './orders.js';
 
-export async function listProducts(req, res) {
+export async function listCategories(req, res) {
   const { offset = 0, limit = 10 } = req.query;
-
   const series = await pagedQuery(
     `SELECT
-        *
-      FROM
-        products
-      ORDER BY updated DESC`,
+    *
+    FROM
+    categories
+    ORDER BY title ASC`,
     [],
     { offset, limit },
   );
@@ -34,19 +35,12 @@ export async function listProducts(req, res) {
   return res.json(seriesWithPage);
 }
 
-export async function createProduct(req, res) {
-  const {
-    title = '', price = '', description = '', category = '',
-  } = req.body;
+export async function createCategory(req, res) {
+  const { title } = req.body;
 
-  const result = await listCategoryByTitle({ title: category });
-  const { id } = result;
+  const category = await insertCategory({ title });
 
-  const product = await insertProduct({
-    title, price, description, category: id,
-  });
+  if (!category) return res.status(500);
 
-  if (!product) return res.status(500);
-
-  return res.status(201).json(product);
+  return res.status(201).json(category);
 }

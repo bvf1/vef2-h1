@@ -9,8 +9,6 @@ import {
 import { resourceExists } from './helpers.js';
 import { LoginError } from '../errors.js';
 import { logger } from '../utils/logger.js';
-import { listProducts } from '../api/products.js';
-import { listCategoryNames, listProductNames } from '../db.js';
 
 /**
  * Collection of validators based on express-validator
@@ -119,6 +117,13 @@ export const usernameAndPaswordValidValidator = body('username').custom(
   },
 );
 
+export const inProductionValidator = body('inproduction')
+  .if(isPatchingAllowAsOptional)
+  .exists()
+  .withMessage('inproduction is required')
+  .isBoolean({ strict: false })
+  .withMessage('inproduction must be a boolean');
+
 export const adminValidator = body('admin')
   .exists()
   .withMessage('admin is required')
@@ -141,53 +146,29 @@ export const adminValidator = body('admin')
     return Promise.resolve();
   });
 
-export const categoryTitleValidator = body('title')
-  .isLength({ min: 1, max: 128 })
-  .withMessage('title is required, max 128')
-  .custom(async (title) => {
-    const categories = await listCategoryNames();
-
-    const hasValue = (categories.some((item) => (item === title)));
-
-    if (hasValue) {
-      return Promise.reject(new Error('Category Name already exists'));
-    }
-    return Promise.resolve();
-  });
-
-export const productTitleValidator = body('title')
-  .isLength({ min: 1, max: 128 })
-  .withMessage('title is required, max 128')
-  .custom(async (title) => {
-    const result = await listProductNames();
-    const hasValue = (result.some((item) => (item === title)));
-
-    if (hasValue) {
-      return Promise.reject(new Error('Product Name already exists'));
-    }
-    return Promise.resolve();
-  });
-
-export const categoryExistsValidator = body('category')
-  .isLength({ min: 1, max: 128 })
-  .withMessage('category is required, max 128')
-  .custom(async (category) => {
-    const categories = await listCategoryNames();
-
-    const hasValue = (categories.some((item) => (item === category)));
-    if (!hasValue) {
-      return Promise.reject(new Error('Category doesnt exist'));
-    }
-    return Promise.resolve();
-  });
-
-export const priceValidator = body('price')
-  .isInt({ min: 1 })
-  .withMessage('number must be an integer larger than 0');
-
 export const numberValidator = body('number')
   .isInt({ min: 1 })
   .withMessage('number must be an integer larger than 0');
+
+export const airDateOptionalValidator = body('airDate')
+  .optional()
+  .isDate()
+  .withMessage('airDate must be a date');
+
+export const airDateValidator = body('airDate')
+  .if(isPatchingAllowAsOptional)
+  .isDate()
+  .withMessage('airDate must be a date');
+
+export const overviewOptionalValidator = body('overview')
+  .optional()
+  .isString({ min: 0 })
+  .withMessage('overview must be a string');
+
+export const taglineOptionalValidator = body('tagline')
+  .optional()
+  .isString({ min: 0 })
+  .withMessage('tagline must be a string');
 
 export const descriptionValidator = body('description')
   .if(isPatchingAllowAsOptional)
@@ -199,11 +180,30 @@ export const languageValidator = body('language')
   .isString({ min: 2, max: 2 })
   .withMessage('language must be a string of length 2');
 
+export const networkOptionalValidator = body('network')
+  .optional()
+  .isString({ min: 0 })
+  .withMessage('network must be a string');
+
 // TODO refactor optional text validators into one generic one
 export const urlOptionalValidator = body('url')
   .optional()
   .isString({ min: 0 })
   .withMessage('url must be a string');
+
+export const seasonIdValidator = param('seasonId')
+  .isInt({ min: 1 })
+  .withMessage('seasonId must be an integer larger than 0');
+// TODO custom that makes sure it exists
+
+export const serieIdValidator = param('serieId')
+  .isInt({ min: 1 })
+  .withMessage('serieId must be an integer larger than 0');
+// TODO custom that makes sure it exists
+
+export const episodeIdValidator = param('episodeId')
+  .isInt({ min: 1 })
+  .withMessage('episodeId must be an integer larger than 0');
 // TODO custom that makes sure it exists
 
 const MIMETYPES = ['image/jpeg', 'image/png', 'image/gif'];
@@ -212,7 +212,7 @@ function validateImageMimetype(mimetype) {
   return MIMETYPES.indexOf(mimetype.toLowerCase()) >= 0;
 }
 
-export const imageValidator = body('image').custom(
+export const posterValidator = body('image').custom(
   async (image, { req = {} }) => {
     const { file: { path, mimetype } = {} } = req;
 
@@ -234,16 +234,39 @@ export const imageValidator = body('image').custom(
   },
 );
 
-export const categoryValidator = [
-  categoryTitleValidator,
+export const episodeValidators = [
+  nameValidator,
+  numberValidator,
+  airDateOptionalValidator,
+  overviewOptionalValidator,
+  seasonIdValidator,
+  serieIdValidator,
 ];
 
-export const productValidators = [
-  productTitleValidator,
-  priceValidator,
-  descriptionValidator,
-  categoryExistsValidator,
+export const seasonValidators = [
+  nameValidator,
+  numberValidator,
+  airDateOptionalValidator,
+  overviewOptionalValidator,
+  serieIdValidator,
+  posterValidator,
 ];
+
+export const serieValidators = [
+  nameValidator,
+  airDateValidator,
+  inProductionValidator,
+  taglineOptionalValidator,
+  posterValidator,
+  descriptionValidator,
+  languageValidator,
+  networkOptionalValidator,
+  urlOptionalValidator,
+];
+
+export const validateRating = body('rating')
+  .isIn([0, 1, 2, 3, 4, 5])
+  .withMessage('rating must be an integer, one of 0, 1, 2, 3, 4, 5');
 
 export const validateState = body('state')
   .isIn(['want to watch', 'watching', 'watched'])
