@@ -53,8 +53,8 @@ export async function createOrder(req, res) {
       ($1)
     RETURNING id, created, name;
   `;
-  const values = [name, created];
-  const result = await query(q, values);
+  const values = [name];
+  const result = await singleQuery(q, values);
 
   if (result && result.rowCount === 1) {
     return result.rows[0];
