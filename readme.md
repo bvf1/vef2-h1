@@ -58,7 +58,7 @@ Til að útfæra þessa virkni þarf að útbúa gagnagrunn með eftirfarandi t�
   - Nafn, strengur, krafist
 - Línur í pöntun
   - Auðkenni vöru
-  - Auðkenni körfu
+  - Auðkenni pöntunar
   - Fjöldi vara, heiltala stærri en 0
 - Stöður pantana
   - Auðkenni pöntunar
