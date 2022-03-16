@@ -15,9 +15,7 @@ import { readFile } from '../utils/fs-helpers.js';
 import { listUsers, listUser, updateUser } from './users.js';
 
 import {
-  listOrders,
-  listOrder,
-  createOrder,
+  listOrders, listOrder, createOrder,
 } from './orders.js';
 
 import {
@@ -146,7 +144,7 @@ router.patch(
 
 router.get(
   '/orders',
-  // requireAdmin,
+  requireAdmin,
   pagingQuerystringValidator,
   validationCheck,
   listOrders,

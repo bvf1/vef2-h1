@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS orderLines;
 DROP TABLE IF EXISTS orderStates;
 DROP TABLE IF EXISTS products;
 DROP TABLE IF EXISTS carts;
+DROP TABLE IF EXISTS cartLines;
 DROP TABLE IF EXISTS orders;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS categories;
@@ -27,6 +28,14 @@ CREATE TABLE products (
 CREATE TABLE carts (
   id uuid PRIMARY KEY,
   created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE cartLines (
+  productID INTEGER NOT NULL,
+  cartID UUID NOT NULL,
+  constraint productID FOREIGN KEY (productID) REFERENCES products (id),
+  constraint cartID FOREIGN KEY (cartID) REFERENCES carts (id),
+  quantity SERIAL
 );
 
 CREATE TABLE orders (
