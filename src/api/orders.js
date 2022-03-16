@@ -28,9 +28,13 @@ export async function listOrder(orderId) {
   const order = await singleQuery(
     `
     SELECT
-      id, created, name
+      o.id, o.created, o.name, os.orderid, os.stateoforder, os.created
     FROM
-        orders
+        orders AS o
+    LEFT JOIN
+        orderstates as os
+    ON
+        o.id = os.orderid
     WHERE
         id = $1
     `,

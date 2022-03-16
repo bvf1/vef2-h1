@@ -144,7 +144,7 @@ router.patch(
 
 router.get(
   '/orders',
-  requireAdmin,
+  // requireAdmin,
   pagingQuerystringValidator,
   validationCheck,
   listOrders,
