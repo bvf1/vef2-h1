@@ -28,9 +28,13 @@ export async function listOrder(orderId) {
   const order = await singleQuery(
     `
     SELECT
-      id, created, name
+      o.id, o.created, o.name, os.orderid, os.stateoforder, os.created
     FROM
-        orders
+        orders AS o
+    LEFT JOIN
+        orderstates as os
+    ON
+        o.id = os.orderid
     WHERE
         id = $1
     `,
@@ -44,7 +48,59 @@ export async function listOrder(orderId) {
   return order;
 }
 
-export async function createOrder(req, res) {
+export async function listOrderStatus(orderId) {
+  const orderStatus = await singleQuery(
+    `
+    SELECT
+      o.name, os.stateoforder, os.created
+    FROM
+        orders AS o
+    LEFT JOIN
+        orderstates as os
+    ON
+        o.id = os.orderid
+    WHERE
+        id = $1
+    `,
+    [orderId],
+  );
+
+  if (!orderStatus) {
+    return null;
+  }
+
+  return orderStatus;
+}
+
+export async function updateOrderStatus(req, res) {
+  const { status } = req.body;
+  const orderId = req.params.id;
+
+  try {
+    const updatedStatus = await singleQuery(
+      `
+      UPDATE
+        userstates
+      SET
+        stateoforder = $1
+        created
+      WHERE
+          orderid = $2
+      `,
+      [status, orderId],
+    );
+    return res.status(200).json(updatedStatus);
+  } catch (e) {
+    logger.error(
+      `unable to change status to "${status}" for user "${orderId}"`,
+      e,
+    );
+  }
+
+  return res.status(500).json(null);
+}
+
+export async function createOrder(req) {
   const { name } = req.body;
   const q = `
     INSERT INTO orders
@@ -53,8 +109,8 @@ export async function createOrder(req, res) {
       ($1)
     RETURNING id, created, name;
   `;
-  const values = [name, created];
-  const result = await query(q, values);
+  const values = [name];
+  const result = await singleQuery(q, values);
 
   if (result && result.rowCount === 1) {
     return result.rows[0];
