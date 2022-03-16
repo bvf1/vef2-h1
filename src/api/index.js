@@ -19,6 +19,10 @@ import {
 } from './orders.js';
 
 import {
+  createCart,
+} from './carts.js'
+
+import {
   adminValidator,
   episodeIdValidator,
   episodeValidators,
@@ -121,6 +125,12 @@ router.post(
   catchErrors(createOrder),
 );
 
+router.post(
+  '/cart',
+  validationCheck,
+  catchErrors(createCart),
+);
+
 /* admin auth routes */
 
 router.get(
@@ -150,7 +160,7 @@ router.patch(
 
 router.get(
   '/orders',
-  // requireAdmin,
+  requireAdmin,
   pagingQuerystringValidator,
   validationCheck,
   listOrders,

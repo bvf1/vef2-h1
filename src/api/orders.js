@@ -100,7 +100,7 @@ export async function updateOrderStatus(req, res) {
   return res.status(500).json(null);
 }
 
-export async function createOrder(req, res) {
+export async function createOrder(req) {
   const { name } = req.body;
   const q = `
     INSERT INTO orders
