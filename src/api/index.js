@@ -20,12 +20,13 @@ import {
 
 import {
   createCart,
-} from './carts.js'
+} from './carts.js';
 
 import {
   adminValidator,
   pagingQuerystringValidator,
   validateResourceExists,
+  nameValidator,
   validateResourceNotExists,
   atLeastOneBodyValueValidator,
   validateState,
@@ -98,6 +99,13 @@ router.get(
   pagingQuerystringValidator,
   validationCheck,
   catchErrors(listProducts),
+);
+
+router.get(
+  '/orders/:id/status',
+  validateResourceExists(listOrderStatus),
+  validationCheck,
+  returnResource,
 );
 
 router.get(
