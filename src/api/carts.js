@@ -3,18 +3,16 @@ import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { logger } from '../utils/logger.js';
 
 export async function createCart(req, res) {
-  const { name } = req.body;
-
   try {
     const createdCart = await singleQuery(
       `
       INSERT INTO carts
-        (name, id)
+        (id)
       VALUES
-        ($1, gen_random_uuid())
-      RETURNING name, id;
+        (gen_random_uuid())
+      RETURNING id;
     `,
-      [name],
+      [],
     );
     return res.status(200).json(createdCart);
   } catch (e) {
