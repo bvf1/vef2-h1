@@ -37,9 +37,9 @@ CREATE TABLE orders (
 
 CREATE TABLE orderLines (
   productID INTEGER NOT NULL,
-  cardID UUID NOT NULL,
+  cartID UUID NOT NULL,
   constraint productID FOREIGN KEY (productID) REFERENCES products (id),
-  constraint cardID FOREIGN KEY (cardID) REFERENCES carts (id),
+  constraint cartID FOREIGN KEY (cartID) REFERENCES carts (id),
   quantity SERIAL
 );
 
