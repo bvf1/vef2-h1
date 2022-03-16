@@ -107,11 +107,7 @@ router.post(
   catchErrors(loginRoute),
 );
 
-router.get(
-  '/users/me',
-  requireAuthentication,
-  catchErrors(currentUserRoute),
-);
+router.get('/users/me', requireAuthentication, catchErrors(currentUserRoute));
 
 router.patch(
   '/users/me',

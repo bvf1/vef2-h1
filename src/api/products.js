@@ -1,6 +1,10 @@
 import xss from 'xss';
 import {
-  query, singleQuery, pagedQuery, deleteQuery, conditionalUpdate,
+  query,
+  singleQuery,
+  pagedQuery,
+  deleteQuery,
+  conditionalUpdate,
 } from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { uploadImage } from '../utils/cloudinary.js';
@@ -11,19 +15,19 @@ export async function listProducts(req, res) {
 
   const series = await pagedQuery(
     `SELECT
-        id
+        *
       FROM
         products
-      ORDER BY id ASC`,
+      ORDER BY updated DESC`,
     [],
     { offset, limit },
   );
 
-  const seriesWithPage = addPageMetadata(
-    series,
-    req.path,
-    { offset, limit, length: series.items.length },
-  );
+  const seriesWithPage = addPageMetadata(series, req.path, {
+    offset,
+    limit,
+    length: series.items.length,
+  });
 
   return res.json(seriesWithPage);
 }

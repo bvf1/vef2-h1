@@ -15,11 +15,11 @@ export async function listUsers(req, res) {
     { offset, limit },
   );
 
-  const usersWithPage = addPageMetadata(
-    users,
-    req.path,
-    { offset, limit, length: users.items.length },
-  );
+  const usersWithPage = addPageMetadata(users, req.path, {
+    offset,
+    limit,
+    length: users.items.length,
+  });
 
   return res.json(usersWithPage);
 }
@@ -65,7 +65,10 @@ export async function updateUser(req, res) {
     );
     return res.status(200).json(updatedUser);
   } catch (e) {
-    logger.error(`unable to change admin to "${admin}" for user "${userId}"`, e);
+    logger.error(
+      `unable to change admin to "${admin}" for user "${userId}"`,
+      e,
+    );
   }
 
   return res.status(500).json(null);

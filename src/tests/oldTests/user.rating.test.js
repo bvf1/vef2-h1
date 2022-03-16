@@ -30,7 +30,9 @@ describe('tv series admin', () => {
     const { result, status } = await postAndParse('/tv/1/rate', null, token);
 
     expect(status).toBe(400);
-    expect(result.errors[0].msg).toBe('rating must be an integer, one of 0, 1, 2, 3, 4, 5');
+    expect(result.errors[0].msg).toBe(
+      'rating must be an integer, one of 0, 1, 2, 3, 4, 5',
+    );
   });
 
   test('POST /tv/1/rate w/user, invalid rating', async () => {
@@ -41,7 +43,9 @@ describe('tv series admin', () => {
     const { result, status } = await postAndParse('/tv/1/rate', data, token);
 
     expect(status).toBe(400);
-    expect(result.errors[0].msg).toBe('rating must be an integer, one of 0, 1, 2, 3, 4, 5');
+    expect(result.errors[0].msg).toBe(
+      'rating must be an integer, one of 0, 1, 2, 3, 4, 5',
+    );
   });
 
   test('POST /tv/1/rate w/user, valid rating', async () => {
@@ -69,7 +73,11 @@ describe('tv series admin', () => {
     expect(result.rating).toBe(5);
     expect(result.serieid).toBe(1);
 
-    const { result: secondResult, status: secondStatus } = await postAndParse('/tv/1/rate', data, token);
+    const { result: secondResult, status: secondStatus } = await postAndParse(
+      '/tv/1/rate',
+      data,
+      token,
+    );
     expect(secondStatus).toBe(400);
     expect(secondResult.errors[0].msg).toBe('already exists');
   });
@@ -96,7 +104,11 @@ describe('tv series admin', () => {
     expect(result.serieid).toBe(1);
 
     const patchData = { rating: 1 };
-    const { result: patchResult, status: patchStatus } = await patchAndParse('/tv/1/rate', patchData, token);
+    const { result: patchResult, status: patchStatus } = await patchAndParse(
+      '/tv/1/rate',
+      patchData,
+      token,
+    );
 
     expect(patchStatus).toBe(200);
     expect(patchResult.user).toBe(user.id);
@@ -115,7 +127,11 @@ describe('tv series admin', () => {
     expect(result.rating).toBe(5);
     expect(result.serieid).toBe(1);
 
-    const { status: deleteStatus } = await deleteAndParse('/tv/1/rate', null, token);
+    const { status: deleteStatus } = await deleteAndParse(
+      '/tv/1/rate',
+      null,
+      token,
+    );
 
     expect(deleteStatus).toBe(200);
   });
@@ -132,7 +148,10 @@ describe('tv series admin', () => {
     expect(result.rating).toBe(5);
     expect(result.serieid).toBe(1);
 
-    const { result: fetchResult, status: fetchStatus } = await fetchAndParse('/tv/1', token);
+    const { result: fetchResult, status: fetchStatus } = await fetchAndParse(
+      '/tv/1',
+      token,
+    );
 
     expect(fetchStatus).toBe(200);
     expect(fetchResult.id).toBe(1);

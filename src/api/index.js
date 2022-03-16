@@ -4,15 +4,15 @@ import { fileURLToPath } from 'url';
 import express from 'express';
 import multer from 'multer';
 
-import { requireAuthentication, requireAdmin, addUserIfAuthenticated } from '../auth/passport.js';
+import {
+  requireAuthentication,
+  requireAdmin,
+  addUserIfAuthenticated,
+} from '../auth/passport.js';
 import { catchErrors } from '../utils/catchErrors.js';
 import { readFile } from '../utils/fs-helpers.js';
 
-import {
-  listUsers,
-  listUser,
-  updateUser,
-} from './users.js';
+import { listUsers, listUser, updateUser } from './users.js';
 
 import {
   adminValidator,
@@ -46,22 +46,23 @@ const MULTER_TEMP_DIR = './temp';
  * Hjálparfall til að bæta multer við route.
  */
 function withMulter(req, res, next) {
-  multer({ dest: MULTER_TEMP_DIR })
-    .single('image')(req, res, (err) => {
-      if (err) {
-        if (err.message === 'Unexpected field') {
-          const errors = [{
+  multer({ dest: MULTER_TEMP_DIR }).single('image')(req, res, (err) => {
+    if (err) {
+      if (err.message === 'Unexpected field') {
+        const errors = [
+          {
             field: 'image',
             error: 'Unable to read image',
-          }];
-          return res.status(400).json({ errors });
-        }
-
-        return next(err);
+          },
+        ];
+        return res.status(400).json({ errors });
       }
 
-      return next();
-    });
+      return next(err);
+    }
+
+    return next();
+  });
 }
 
 export const router = express.Router();

@@ -20,9 +20,7 @@ const resolvedCacheDir = join(path, CACHE_DIR);
 const resolvedImageDir = join(path, IMAGE_DIR);
 const resolvedDataDir = join(path, DATA_DIR);
 
-const {
-  TMDB_TOKEN: tmdbToken,
-} = process.env;
+const { TMDB_TOKEN: tmdbToken } = process.env;
 
 if (!tmdbToken) {
   logger.error('Missing TMDB_TOKEN from env');

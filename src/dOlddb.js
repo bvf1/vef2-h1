@@ -7,10 +7,7 @@ import { logger } from './utils/logger.js';
 
 dotenv.config();
 
-const {
-  DATABASE_URL: connectionString,
-  NODE_ENV: nodeEnv = 'development',
-} = process.env;
+const { DATABASE_URL: connectionString, NODE_ENV: nodeEnv = 'development' } = process.env;
 
 // Notum SSL tengingu við gagnagrunn ef við erum *ekki* í development mode, þ.e.a.s. á local vél
 const ssl = nodeEnv !== 'development' ? { rejectUnauthorized: false } : false;
@@ -291,10 +288,9 @@ export async function insertSerieGenre(serieId, genreId) {
 // TODO refactor
 export async function conditionalUpdate(table, id, fields, values) {
   const filteredFields = fields.filter((i) => typeof i === 'string');
-  const filteredValues = values
-    .filter((i) => typeof i === 'string'
-      || typeof i === 'number'
-      || i instanceof Date);
+  const filteredValues = values.filter(
+    (i) => typeof i === 'string' || typeof i === 'number' || i instanceof Date,
+  );
 
   if (filteredFields.length === 0) {
     return false;

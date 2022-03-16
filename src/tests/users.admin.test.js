@@ -43,7 +43,10 @@ describe('/users admin', () => {
     const token = await loginAsHardcodedAdminAndReturnToken();
     expect(token).toBeTruthy();
 
-    const { result, status } = await fetchAndParse('/users?offset=1&limit=1', token);
+    const { result, status } = await fetchAndParse(
+      '/users?offset=1&limit=1',
+      token,
+    );
 
     expect(status).toBe(200);
     expect(result.limit).toBe(1);
@@ -58,7 +61,10 @@ describe('/users admin', () => {
     const token = await loginAsHardcodedAdminAndReturnToken();
     expect(token).toBeTruthy();
 
-    const { result, status } = await fetchAndParse('/users?offset=99999&limit=1', token);
+    const { result, status } = await fetchAndParse(
+      '/users?offset=99999&limit=1',
+      token,
+    );
 
     expect(status).toBe(200);
     expect(result.limit).toBe(1);
@@ -131,7 +137,11 @@ describe('/users admin', () => {
     expect(user.admin).toBe(false);
 
     const data = { admin: true };
-    const { result, status } = await patchAndParse(`/users/${user.id}`, data, token);
+    const { result, status } = await patchAndParse(
+      `/users/${user.id}`,
+      data,
+      token,
+    );
 
     expect(status).toBe(200);
     expect(result.admin).toBe(true);

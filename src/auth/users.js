@@ -11,12 +11,13 @@ dotenv.config();
  * Hjálparföll fyrir notendur, uppfletting, búa til, uppfæra.
  */
 
-const {
-  BCRYPT_ROUNDS: bcryptRounds = 1,
-} = process.env;
+const { BCRYPT_ROUNDS: bcryptRounds = 1 } = process.env;
 
 export async function createUser(username, email, password) {
-  const hashedPassword = await bcrypt.hash(password, parseInt(bcryptRounds, 10));
+  const hashedPassword = await bcrypt.hash(
+    password,
+    parseInt(bcryptRounds, 10),
+  );
 
   const q = `
     INSERT INTO
@@ -26,10 +27,7 @@ export async function createUser(username, email, password) {
     RETURNING username, email`;
 
   const values = [xss(username), xss(email), hashedPassword];
-  const result = await query(
-    q,
-    values,
-  );
+  const result = await query(q, values);
 
   return result.rows[0];
 }
@@ -116,10 +114,7 @@ export async function updateUser(id, password, email) {
     hashedPassword = await bcrypt.hash(password, parseInt(bcryptRounds, 10));
   }
 
-  const values = [
-    hashedPassword,
-    isString(email) ? xss(email) : null,
-  ];
+  const values = [hashedPassword, isString(email) ? xss(email) : null];
 
   fields.push('updated');
   values.push(new Date());

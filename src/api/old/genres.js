@@ -17,11 +17,11 @@ export async function listGenres(req, res) {
     { offset, limit },
   );
 
-  const genresWithPage = addPageMetadata(
-    genres,
-    req.path,
-    { offset, limit, length: genres.items.length },
-  );
+  const genresWithPage = addPageMetadata(genres, req.path, {
+    offset,
+    limit,
+    length: genres.items.length,
+  });
 
   return res.json(genresWithPage);
 }

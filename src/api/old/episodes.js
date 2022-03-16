@@ -42,7 +42,11 @@ export async function listEpisode(_, { params = {} } = {}) {
 }
 
 export async function deleteEpisode(req, res) {
-  const { serieId, seasonId: seasonNumber, episodeId: episodeNumber } = req.params;
+  const {
+    serieId,
+    seasonId: seasonNumber,
+    episodeId: episodeNumber,
+  } = req.params;
 
   // TODO error handling
   const actualSeasonId = await seasonIdBySeasonNumber(serieId, seasonNumber);
@@ -61,7 +65,10 @@ export async function deleteEpisode(req, res) {
 
     return res.status(200).json({});
   } catch (e) {
-    logger.error(`unable to delete episode "${episodeNumber}" in season "${seasonNumber}" in serie "${episodeNumber}"`, e);
+    logger.error(
+      `unable to delete episode "${episodeNumber}" in season "${seasonNumber}" in serie "${episodeNumber}"`,
+      e,
+    );
   }
 
   return res.status(500).json(null);
@@ -88,7 +95,14 @@ export async function createEpisode(req, res) {
         RETURNING
           id, name, "number", air_date, overview, seasonId, serieId
       `,
-      [xss(name), xss(number), airDate, xss(overview), xss(actualSeasonId), xss(serieId)],
+      [
+        xss(name),
+        xss(number),
+        airDate,
+        xss(overview),
+        xss(actualSeasonId),
+        xss(serieId),
+      ],
     );
     return res.status(201).json(episode);
   } catch (e) {

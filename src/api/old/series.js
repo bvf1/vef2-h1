@@ -1,6 +1,11 @@
 import xss from 'xss';
 import {
-  query, singleQuery, pagedQuery, insertSerie, deleteQuery, conditionalUpdate,
+  query,
+  singleQuery,
+  pagedQuery,
+  insertSerie,
+  deleteQuery,
+  conditionalUpdate,
 } from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { uploadImage } from '../utils/cloudinary.js';
@@ -69,11 +74,11 @@ export async function listSeries(req, res) {
     { offset, limit },
   );
 
-  const seriesWithPage = addPageMetadata(
-    series,
-    req.path,
-    { offset, limit, length: series.items.length },
-  );
+  const seriesWithPage = addPageMetadata(series, req.path, {
+    offset,
+    limit,
+    length: series.items.length,
+  });
 
   return res.json(seriesWithPage);
 }

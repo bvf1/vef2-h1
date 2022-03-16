@@ -2,53 +2,34 @@
   "menu": {
     "products": {
       "href": "/menu",
-      "methods": [
-        "GET",
-        "POST"
-      ]
+      "methods": ["GET", "POST"]
     },
     "product": {
       "href": "/tv/{id}",
-      "methods": [
-        "GET",
-        "PATCH",
-        "DELETE"
-      ]
+      "methods": ["GET", "PATCH", "DELETE"]
     }
   },
 
   "users": {
     "users": {
       "href": "/users",
-      "methods": [
-        "GET"
-      ]
+      "methods": ["GET"]
     },
     "user": {
       "href": "/users/{id}",
-      "methods": [
-        "GET",
-        "PATCH"
-      ]
+      "methods": ["GET", "PATCH"]
     },
     "register": {
       "href": "/users/register",
-      "methods": [
-        "POST"
-      ]
+      "methods": ["POST"]
     },
     "login": {
       "href": "/users/login",
-      "methods": [
-        "POST"
-      ]
+      "methods": ["POST"]
     },
     "me": {
       "href": "/users/me",
-      "methods": [
-        "GET",
-        "PATCH"
-      ]
+      "methods": ["GET", "PATCH"]
     }
   }
 }

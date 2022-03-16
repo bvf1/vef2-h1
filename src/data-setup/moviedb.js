@@ -3,9 +3,7 @@ import { basename, join } from 'path';
 import fetch from 'node-fetch';
 
 import { slugify } from '../utils/slugify.js';
-import {
-  exists, readFile, writeFile,
-} from '../utils/fs-helpers.js';
+import { exists, readFile, writeFile } from '../utils/fs-helpers.js';
 
 /**
  * Útbýr tengingar við nokkrar aðferðir í TheMovieDb API.
@@ -78,9 +76,10 @@ export class MovieDb {
     const filename = basename(imagePath);
     const url = `https://image.tmdb.org/t/p/original${imagePath}`;
 
-    const result = await this.fetchOrCached(
-      url, this.imageDir, { cacheKey: filename, binary: true },
-    );
+    const result = await this.fetchOrCached(url, this.imageDir, {
+      cacheKey: filename,
+      binary: true,
+    });
 
     return { buffer: result, filename };
   }

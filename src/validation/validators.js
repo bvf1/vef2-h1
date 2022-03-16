@@ -1,6 +1,10 @@
 import { body, query, param } from 'express-validator';
 
-import { comparePasswords, findByEmail, findByUsername } from '../auth/users.js';
+import {
+  comparePasswords,
+  findByEmail,
+  findByUsername,
+} from '../auth/users.js';
 
 import { resourceExists } from './helpers.js';
 import { LoginError } from '../errors.js';
@@ -23,9 +27,7 @@ export const pagingQuerystringValidator = [
 
 export function validateResourceExists(fetchResource) {
   return [
-    param('id')
-      .custom(resourceExists(fetchResource))
-      .withMessage('not found'),
+    param('id').custom(resourceExists(fetchResource)).withMessage('not found'),
   ];
 }
 
@@ -66,28 +68,30 @@ export const passwordValidator = body('password')
   .isLength({ min: 10, max: 256 })
   .withMessage('password is required, min 10 characters, max 256 characters');
 
-export const emailDoesNotExistValidator = body('email')
-  .custom(async (email) => {
+export const emailDoesNotExistValidator = body('email').custom(
+  async (email) => {
     const user = await findByEmail(email);
 
     if (user) {
       return Promise.reject(new Error('email already exists'));
     }
     return Promise.resolve();
-  });
+  },
+);
 
-export const usernameDoesNotExistValidator = body('username')
-  .custom(async (username) => {
+export const usernameDoesNotExistValidator = body('username').custom(
+  async (username) => {
     const user = await findByUsername(username);
 
     if (user) {
       return Promise.reject(new Error('username already exists'));
     }
     return Promise.resolve();
-  });
+  },
+);
 
-export const usernameAndPaswordValidValidator = body('username')
-  .custom(async (username, { req: { body: reqBody } = {} }) => {
+export const usernameAndPaswordValidValidator = body('username').custom(
+  async (username, { req: { body: reqBody } = {} }) => {
     // Can't bail after username and password validators, so some duplication
     // of validation here
     // TODO use schema validation instead?
@@ -110,7 +114,8 @@ export const usernameAndPaswordValidValidator = body('username')
       return Promise.reject(new LoginError('username or password incorrect'));
     }
     return Promise.resolve();
-  });
+  },
+);
 
 export const inProductionValidator = body('inproduction')
   .if(isPatchingAllowAsOptional)
@@ -189,30 +194,26 @@ export const urlOptionalValidator = body('url')
 export const seasonIdValidator = param('seasonId')
   .isInt({ min: 1 })
   .withMessage('seasonId must be an integer larger than 0');
-  // TODO custom that makes sure it exists
+// TODO custom that makes sure it exists
 
 export const serieIdValidator = param('serieId')
   .isInt({ min: 1 })
   .withMessage('serieId must be an integer larger than 0');
-  // TODO custom that makes sure it exists
+// TODO custom that makes sure it exists
 
 export const episodeIdValidator = param('episodeId')
   .isInt({ min: 1 })
   .withMessage('episodeId must be an integer larger than 0');
-  // TODO custom that makes sure it exists
+// TODO custom that makes sure it exists
 
-const MIMETYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/gif',
-];
+const MIMETYPES = ['image/jpeg', 'image/png', 'image/gif'];
 
 function validateImageMimetype(mimetype) {
   return MIMETYPES.indexOf(mimetype.toLowerCase()) >= 0;
 }
 
-export const posterValidator = body('image')
-  .custom(async (image, { req = {} }) => {
+export const posterValidator = body('image').custom(
+  async (image, { req = {} }) => {
     const { file: { path, mimetype } = {} } = req;
 
     if (!path && !mimetype && req.method === 'PATCH') {
@@ -230,7 +231,8 @@ export const posterValidator = body('image')
     }
 
     return Promise.resolve();
-  });
+  },
+);
 
 export const episodeValidators = [
   nameValidator,
@@ -271,24 +273,25 @@ export const validateState = body('state')
   .withMessage('state must be one of "want to watch", "watching", "watched"');
 
 export function atLeastOneBodyValueValidator(fields) {
-  return body()
-    .custom(async (value, { req }) => {
-      const { body: reqBody } = req;
+  return body().custom(async (value, { req }) => {
+    const { body: reqBody } = req;
 
-      let valid = false;
+    let valid = false;
 
-      for (let i = 0; i < fields.length; i += 1) {
-        const field = fields[i];
+    for (let i = 0; i < fields.length; i += 1) {
+      const field = fields[i];
 
-        if (field in reqBody && reqBody[field] != null) {
-          valid = true;
-          break;
-        }
+      if (field in reqBody && reqBody[field] != null) {
+        valid = true;
+        break;
       }
+    }
 
-      if (!valid) {
-        return Promise.reject(new Error(`require at least one value of: ${fields.join(', ')}`));
-      }
-      return Promise.resolve();
-    });
+    if (!valid) {
+      return Promise.reject(
+        new Error(`require at least one value of: ${fields.join(', ')}`),
+      );
+    }
+    return Promise.resolve();
+  });
 }

@@ -57,11 +57,7 @@ export async function createDir(dir) {
   await mkdir(dir, { recursive: true });
 }
 
-export async function writeFile(
-  file,
-  data,
-  encoding = 'utf8',
-) {
+export async function writeFile(file, data, encoding = 'utf8') {
   return fsWriteFile(file, data, { encoding });
 }
 

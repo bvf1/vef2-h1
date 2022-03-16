@@ -1,7 +1,11 @@
 import { test, describe, expect } from '@jest/globals';
 
 import {
-  fetchAndParse, loginAndReturnToken, patchAndParse, postAndParse, randomValue,
+  fetchAndParse,
+  loginAndReturnToken,
+  patchAndParse,
+  postAndParse,
+  randomValue,
 } from './utils.js';
 
 // TODO read from .env
@@ -37,7 +41,9 @@ describe('users', () => {
 
     expect(status).toBe(400);
     expect(result.errors.length).toBe(1);
-    expect(result.errors[0].msg).toEqual('username is required, max 256 characters');
+    expect(result.errors[0].msg).toEqual(
+      'username is required, max 256 characters',
+    );
   });
 
   test('Create user, too short password', async () => {
@@ -46,7 +52,9 @@ describe('users', () => {
 
     expect(status).toBe(400);
     expect(result.errors.length).toBe(1);
-    expect(result.errors[0].msg).toEqual('password is required, min 10 characters, max 256 characters');
+    expect(result.errors[0].msg).toEqual(
+      'password is required, min 10 characters, max 256 characters',
+    );
   });
 
   test('Create user, invalid email', async () => {
@@ -55,7 +63,9 @@ describe('users', () => {
 
     expect(status).toBe(400);
     expect(result.errors.length).toBe(1);
-    expect(result.errors[0].msg).toEqual('email is required, max 256 characters');
+    expect(result.errors[0].msg).toEqual(
+      'email is required, max 256 characters',
+    );
   });
 
   test('Create user, success', async () => {
@@ -92,7 +102,9 @@ describe('users', () => {
 
     expect(status).toBe(400);
     expect(result.errors.length).toBe(1);
-    expect(result.errors[0].msg).toBe('password is required, min 10 characters, max 256 characters');
+    expect(result.errors[0].msg).toBe(
+      'password is required, min 10 characters, max 256 characters',
+    );
   });
 
   test('Login user, invalid username & pass', async () => {
@@ -139,7 +151,9 @@ describe('users', () => {
     const { result, status } = await patchAndParse('/users/me', data, token);
 
     expect(status).toBe(400);
-    expect(result.errors[0].msg).toBe('require at least one value of: email, password');
+    expect(result.errors[0].msg).toBe(
+      'require at least one value of: email, password',
+    );
   });
 
   test('patch /users/me, invalid email', async () => {
@@ -163,7 +177,9 @@ describe('users', () => {
     const { result, status } = await patchAndParse('/users/me', data, token);
 
     expect(status).toBe(400);
-    expect(result.errors[0].msg).toBe('password is required, min 10 characters, max 256 characters');
+    expect(result.errors[0].msg).toBe(
+      'password is required, min 10 characters, max 256 characters',
+    );
   });
 
   test('patch /users/me, valid data', async () => {
@@ -189,10 +205,16 @@ describe('users', () => {
     expect(nullToken).toBeNull();
 
     // but new password should work
-    const newToken = await loginAndReturnToken({ username, password: newPassword });
+    const newToken = await loginAndReturnToken({
+      username,
+      password: newPassword,
+    });
     expect(newToken).toBeTruthy();
 
-    const { result: newResult, status: newStatus } = await fetchAndParse('/users/me', newToken);
+    const { result: newResult, status: newStatus } = await fetchAndParse(
+      '/users/me',
+      newToken,
+    );
 
     expect(newStatus).toBe(200);
     expect(newResult.admin).toBe(false);
@@ -202,7 +224,11 @@ describe('users', () => {
   });
 
   test('Create user that already exists (admin)', async () => {
-    const data = { username: 'admin', password: 'x'.repeat(10), email: 'admin@example.org' };
+    const data = {
+      username: 'admin',
+      password: 'x'.repeat(10),
+      email: 'admin@example.org',
+    };
     const { result, status } = await postAndParse('/users/register', data);
 
     expect(status).toBe(400);

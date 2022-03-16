@@ -13,12 +13,18 @@ export function validationCheck(req, res, next) {
   const validation = validationResult(req);
 
   if (!validation.isEmpty()) {
-    const notFoundError = validation.errors.find((error) => error.msg === 'not found');
-    const serverError = validation.errors.find((error) => error.msg === 'server error');
+    const notFoundError = validation.errors.find(
+      (error) => error.msg === 'not found',
+    );
+    const serverError = validation.errors.find(
+      (error) => error.msg === 'server error',
+    );
 
     // We loose the actual error object of LoginError, match with error message
     // TODO brittle, better way?
-    const loginError = validation.errors.find((error) => error.msg === 'username or password incorrect');
+    const loginError = validation.errors.find(
+      (error) => error.msg === 'username or password incorrect',
+    );
 
     let status = 400;
 
@@ -32,7 +38,9 @@ export function validationCheck(req, res, next) {
 
     // Strecthing the express-validator library...
     // @see auth/api.js
-    const validationErrorsWithoutSkip = validation.errors.filter((error) => error.msg !== 'skip');
+    const validationErrorsWithoutSkip = validation.errors.filter(
+      (error) => error.msg !== 'skip',
+    );
 
     return res.status(status).json({ errors: validationErrorsWithoutSkip });
   }

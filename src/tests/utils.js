@@ -31,7 +31,13 @@ export function getRandomInt(min, max) {
   return Math.floor(Math.random() * (floorMax - ceilMin) + ceilMin);
 }
 
-export async function methodAndParse(method, path, data = null, token = null, imagePath = null) {
+export async function methodAndParse(
+  method,
+  path,
+  data = null,
+  token = null,
+  imagePath = null,
+) {
   const url = new URL(path, baseUrl);
 
   const options = { headers: {} };
@@ -114,6 +120,9 @@ export async function createRandomUserAndReturnWithToken() {
 }
 
 export async function loginAsHardcodedAdminAndReturnToken() {
-  const token = await loginAndReturnToken({ username: adminUser, password: adminPass });
+  const token = await loginAndReturnToken({
+    username: adminUser,
+    password: adminPass,
+  });
   return token;
 }

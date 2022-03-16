@@ -202,8 +202,9 @@ async function episodes() {
 
 async function images() {
   const imagesOnDisk = await readDir(join(path, IMG_DIR));
-  const filteredImages = imagesOnDisk
-    .filter((i) => extname(i).toLowerCase() === '.jpg');
+  const filteredImages = imagesOnDisk.filter(
+    (i) => extname(i).toLowerCase() === '.jpg',
+  );
 
   if (filteredImages.length === 0) {
     logger.warn('No images to upload');

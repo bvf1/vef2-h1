@@ -21,7 +21,11 @@ describe('episodes admin', () => {
     const { token } = await createRandomUserAndReturnWithToken();
     expect(token).toBeTruthy();
 
-    const { result, status } = await postAndParse('/tv/1/season/1/episode', null, token);
+    const { result, status } = await postAndParse(
+      '/tv/1/season/1/episode',
+      null,
+      token,
+    );
 
     expect(status).toBe(401);
     expect(result.error).toBe('insufficient authorization');
@@ -32,7 +36,11 @@ describe('episodes admin', () => {
     expect(token).toBeTruthy();
 
     const data = {};
-    const { result, status } = await postAndParse('/tv/a/season/b/episode', data, token);
+    const { result, status } = await postAndParse(
+      '/tv/a/season/b/episode',
+      data,
+      token,
+    );
 
     expect(status).toBe(400);
     // TODO brittle to rely on number here
@@ -47,7 +55,11 @@ describe('episodes admin', () => {
       name: '',
       number: '1',
     };
-    const { result, status } = await postAndParse('/tv/1/season/1/episode', data, token);
+    const { result, status } = await postAndParse(
+      '/tv/1/season/1/episode',
+      data,
+      token,
+    );
 
     expect(status).toBe(400);
     expect(result.errors.length).toBe(1);
@@ -62,11 +74,17 @@ describe('episodes admin', () => {
       name: 'x',
       number: 'x',
     };
-    const { result, status } = await postAndParse('/tv/1/season/1/episode', data, token);
+    const { result, status } = await postAndParse(
+      '/tv/1/season/1/episode',
+      data,
+      token,
+    );
 
     expect(status).toBe(400);
     expect(result.errors.length).toBe(1);
-    expect(result.errors[0].msg).toBe('number must be an integer larger than 0');
+    expect(result.errors[0].msg).toBe(
+      'number must be an integer larger than 0',
+    );
   });
 
   test('POST /tv/:id/season/:season/episode valid req data, excl seasonId', async () => {
@@ -77,11 +95,17 @@ describe('episodes admin', () => {
       name: 'x',
       number: '1',
     };
-    const { result, status } = await postAndParse('/tv/1/season/a/episode', data, token);
+    const { result, status } = await postAndParse(
+      '/tv/1/season/a/episode',
+      data,
+      token,
+    );
 
     expect(status).toBe(400);
     expect(result.errors.length).toBe(1);
-    expect(result.errors[0].msg).toBe('seasonId must be an integer larger than 0');
+    expect(result.errors[0].msg).toBe(
+      'seasonId must be an integer larger than 0',
+    );
   });
 
   test('POST /tv/:id/season/:season/episode valid req data, excl serieId', async () => {
@@ -92,11 +116,17 @@ describe('episodes admin', () => {
       name: 'x',
       number: '1',
     };
-    const { result, status } = await postAndParse('/tv/a/season/1/episode', data, token);
+    const { result, status } = await postAndParse(
+      '/tv/a/season/1/episode',
+      data,
+      token,
+    );
 
     expect(status).toBe(400);
     expect(result.errors.length).toBe(1);
-    expect(result.errors[0].msg).toBe('serieId must be an integer larger than 0');
+    expect(result.errors[0].msg).toBe(
+      'serieId must be an integer larger than 0',
+    );
   });
 
   test('POST /tv/:id/season/:season/episode valid req data, invalid overview', async () => {
@@ -108,7 +138,11 @@ describe('episodes admin', () => {
       number: '1',
       overview: false, // optional
     };
-    const { result, status } = await postAndParse('/tv/1/season/1/episode', data, token);
+    const { result, status } = await postAndParse(
+      '/tv/1/season/1/episode',
+      data,
+      token,
+    );
 
     expect(status).toBe(400);
     expect(result.errors.length).toBe(1);
@@ -124,7 +158,11 @@ describe('episodes admin', () => {
       number: '1',
       airDate: 'x', // optional
     };
-    const { result, status } = await postAndParse('/tv/1/season/1/episode', data, token);
+    const { result, status } = await postAndParse(
+      '/tv/1/season/1/episode',
+      data,
+      token,
+    );
 
     expect(status).toBe(400);
     expect(result.errors.length).toBe(1);
@@ -141,7 +179,11 @@ describe('episodes admin', () => {
       name,
       number,
     };
-    const { result, status } = await postAndParse('/tv/1/season/1/episode', data, token);
+    const { result, status } = await postAndParse(
+      '/tv/1/season/1/episode',
+      data,
+      token,
+    );
 
     expect(status).toBe(201);
     expect(result.name).toBe(name);
@@ -158,7 +200,11 @@ describe('episodes admin', () => {
     const { token } = await createRandomUserAndReturnWithToken();
     expect(token).toBeTruthy();
 
-    const { result, status } = await deleteAndParse('/tv/1/season/1/episode/999', null, token);
+    const { result, status } = await deleteAndParse(
+      '/tv/1/season/1/episode/999',
+      null,
+      token,
+    );
 
     expect(status).toBe(401);
     expect(result.error).toBe('insufficient authorization');
@@ -174,16 +220,22 @@ describe('episodes admin', () => {
       name,
       number,
     };
-    const { result, status } = await postAndParse('/tv/1/season/1/episode', data, token);
+    const { result, status } = await postAndParse(
+      '/tv/1/season/1/episode',
+      data,
+      token,
+    );
 
     expect(status).toBe(201);
     expect(result.id).toBeGreaterThanOrEqual(1);
     expect(result.name).toBe(name);
     expect(result.number).toBe(number);
 
-    const {
-      result: deleteResult, status: deleteStatus,
-    } = await deleteAndParse(`/tv/1/season/1/episode/${number}`, null, token);
+    const { result: deleteResult, status: deleteStatus } = await deleteAndParse(
+      `/tv/1/season/1/episode/${number}`,
+      null,
+      token,
+    );
 
     expect(deleteStatus).toBe(200);
     expect(deleteResult).toEqual({});

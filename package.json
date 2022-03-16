@@ -14,7 +14,8 @@
     "test-watch": "node --experimental-vm-modules node_modules/.bin/jest --watch",
     "setup": "node ./src/setup/setup.js",
     "create-data": "node ./src/data-setup/setup.js",
-    "faker": "node ./src/data-setup/faker.js"
+    "faker": "node ./src/data-setup/faker.js",
+    "both":  "yarn setup && yarn faker"
   },
   "repository": {
     "type": "git",
@@ -54,6 +55,7 @@
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
     "pg": "^8.5.1",
+    "prettier": "^2.5.1",
     "winston": "^3.3.3",
     "xss": "^1.0.8"
   }

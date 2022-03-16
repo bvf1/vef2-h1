@@ -4,11 +4,11 @@ Keyrir integration test á móti API fyrir hvert route, reynir að grípa flest 
 
 Flest test eru nokkuð sjálfskjalandi en í grunninn:
 
-* Sækja gögn í API með hjálparföllum í `./utils.js`
-* Staðfesta að form gagna sé eins og við búumst við
-* Ef einhver notanda/stjórnanda aðgerð, passa að auðkenning sé í lagi
-  * Skrá sig inn með ný útbúnum notanda og prófa virkni almenns notanda
-  * Skrá sig inn með harðkóðuðum stjórnanda og prófa virkni stjórnanda
+- Sækja gögn í API með hjálparföllum í `./utils.js`
+- Staðfesta að form gagna sé eins og við búumst við
+- Ef einhver notanda/stjórnanda aðgerð, passa að auðkenning sé í lagi
+  - Skrá sig inn með ný útbúnum notanda og prófa virkni almenns notanda
+  - Skrá sig inn með harðkóðuðum stjórnanda og prófa virkni stjórnanda
 
 Þar sem við vitum ekki nákvæmlega hvaða gögn eru hvar, þá er ekki athugað að titill sé nákvæmlega einhver, heldur að það sé titill.
 

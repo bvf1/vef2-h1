@@ -64,7 +64,12 @@ describe('season admin', () => {
       name,
       number,
     };
-    const { result, status } = await postAndParse('/tv/1/season', data, token, './test.png');
+    const { result, status } = await postAndParse(
+      '/tv/1/season',
+      data,
+      token,
+      './test.png',
+    );
 
     expect(status).toBe(201);
     expect(result.name).toBe(name);
@@ -83,7 +88,12 @@ describe('season admin', () => {
       number,
       airDate: '2021-01-01',
     };
-    const { result, status } = await postAndParse('/tv/1/season', data, token, './test.png');
+    const { result, status } = await postAndParse(
+      '/tv/1/season',
+      data,
+      token,
+      './test.png',
+    );
 
     expect(status).toBe(201);
     expect(result.name).toBe(name);
@@ -101,7 +111,11 @@ describe('season admin', () => {
     const { token } = await createRandomUserAndReturnWithToken();
     expect(token).toBeTruthy();
 
-    const { result, status } = await deleteAndParse('/tv/1/season/9999', null, token);
+    const { result, status } = await deleteAndParse(
+      '/tv/1/season/9999',
+      null,
+      token,
+    );
 
     expect(status).toBe(401);
     expect(result.error).toBe('insufficient authorization');
@@ -117,16 +131,23 @@ describe('season admin', () => {
       name,
       number,
     };
-    const { result, status } = await postAndParse('/tv/1/season', data, token, './test.png');
+    const { result, status } = await postAndParse(
+      '/tv/1/season',
+      data,
+      token,
+      './test.png',
+    );
 
     expect(status).toBe(201);
     expect(result.name).toBe(name);
     expect(result.number).toBe(number);
     expect(result.poster).toBeTruthy();
 
-    const {
-      result: deleteResult, status: deleteStatus,
-    } = await deleteAndParse(`/tv/1/season/${number}`, null, token);
+    const { result: deleteResult, status: deleteStatus } = await deleteAndParse(
+      `/tv/1/season/${number}`,
+      null,
+      token,
+    );
 
     expect(deleteStatus).toBe(200);
     expect(deleteResult).toEqual({});

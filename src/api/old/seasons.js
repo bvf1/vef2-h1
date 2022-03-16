@@ -1,5 +1,9 @@
 import {
-  query, singleQuery, pagedQuery, insertSeason, deleteQuery,
+  query,
+  singleQuery,
+  pagedQuery,
+  insertSeason,
+  deleteQuery,
 } from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { uploadImage } from '../utils/cloudinary.js';
@@ -44,11 +48,11 @@ export async function listSeasons(req, res) {
     { offset, limit },
   );
 
-  const categoriesWithPage = addPageMetadata(
-    categories,
-    req.path,
-    { offset, limit, length: categories.items.length },
-  );
+  const categoriesWithPage = addPageMetadata(categories, req.path, {
+    offset,
+    limit,
+    length: categories.items.length,
+  });
 
   return res.json(categoriesWithPage);
 }
@@ -139,7 +143,10 @@ export async function seasonIdBySeasonNumber(serieId, seasonNumber) {
       return season.id;
     }
   } catch (e) {
-    logger.error(`unable to find seasonId based on serieId "${serieId}" and seasonNumber "${seasonNumber}"`, e);
+    logger.error(
+      `unable to find seasonId based on serieId "${serieId}" and seasonNumber "${seasonNumber}"`,
+      e,
+    );
   }
 
   return null;
@@ -163,7 +170,10 @@ export async function deleteSeason(req, res) {
 
     return res.status(200).json({});
   } catch (e) {
-    logger.error(`unable to delete season "${seasonNumber}" in serie "${serieId}"`, e);
+    logger.error(
+      `unable to delete season "${seasonNumber}" in serie "${serieId}"`,
+      e,
+    );
   }
 
   return res.status(500).json(null);

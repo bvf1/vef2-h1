@@ -50,7 +50,9 @@ describe('series', () => {
   });
 
   test('GET /tv/1/season with illegal offset & limit', async () => {
-    const { result, status } = await fetchAndParse('/tv/1/season/?offset=a&limit=b');
+    const { result, status } = await fetchAndParse(
+      '/tv/1/season/?offset=a&limit=b',
+    );
 
     expect(status).toBe(400);
     expect(result.errors.length).toBe(2);

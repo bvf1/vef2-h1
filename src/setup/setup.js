@@ -7,10 +7,7 @@ import csvParser from 'csv-parser';
 
 import { logger } from '../utils/logger.js';
 import { readDir, readFile, stat } from '../utils/fs-helpers.js';
-import {
-  query,
-  end,
-} from '../db.js';
+import { query, end } from '../db.js';
 import { listImages, uploadImage } from '../utils/cloudinary.js';
 
 const DATA_DIR = './../../data';

@@ -41,7 +41,12 @@ describe('tv series admin', () => {
       language: 'is',
       airDate: '2021-01-01',
     };
-    const { result, status } = await postAndParse('/tv/', data, token, './test.png');
+    const { result, status } = await postAndParse(
+      '/tv/',
+      data,
+      token,
+      './test.png',
+    );
 
     expect(status).toBe(201);
     expect(result.name).toBe(name);
@@ -77,16 +82,23 @@ describe('tv series admin', () => {
       language: 'is',
       airDate: '2021-01-01',
     };
-    const { result, status } = await postAndParse('/tv/', data, token, './test.png');
+    const { result, status } = await postAndParse(
+      '/tv/',
+      data,
+      token,
+      './test.png',
+    );
 
     expect(status).toBe(201);
     expect(result.name).toBe(name);
     expect(result.description).toBe('asdf');
     expect(result.image).toBeTruthy();
 
-    const {
-      result: deleteResult, status: deleteStatus,
-    } = await deleteAndParse(`/tv/${result.id}`, null, token);
+    const { result: deleteResult, status: deleteStatus } = await deleteAndParse(
+      `/tv/${result.id}`,
+      null,
+      token,
+    );
 
     expect(deleteStatus).toBe(200);
     expect(deleteResult).toEqual({});
@@ -101,7 +113,9 @@ describe('tv series admin', () => {
     const { result, status } = await patchAndParse('/tv/1', data, token);
 
     expect(status).toBe(400);
-    expect(result.errors[0].msg).toBe('require at least one value of: name, airDate, inProduction, tagline, image, description, language, network, url');
+    expect(result.errors[0].msg).toBe(
+      'require at least one value of: name, airDate, inProduction, tagline, image, description, language, network, url',
+    );
   });
 
   test('PATCH /tv/:serieId, name', async () => {

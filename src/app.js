@@ -8,9 +8,7 @@ import { cors } from './utils/cors.js';
 
 dotenv.config();
 
-const {
-  PORT: port = 3000,
-} = process.env;
+const { PORT: port = 3000 } = process.env;
 
 const app = express();
 
@@ -21,10 +19,9 @@ app.use((req, res, next) => {
   if (req.method === 'POST' || req.method === 'PATCH') {
     if (
       req.headers['content-type']
-      && (
-        req.headers['content-type'] !== 'application/json'
-        && !req.headers['content-type'].startsWith('multipart/form-data;')
-      )) {
+      && req.headers['content-type'] !== 'application/json'
+      && !req.headers['content-type'].startsWith('multipart/form-data;')
+    ) {
       return res.status(400).json({ error: 'body must be json or form-data' });
     }
   }
@@ -36,11 +33,13 @@ app.use(apiRouter);
 
 app.use(cors);
 
-app.use((req, res, next) => { // eslint-disable-line
+app.use((req, res, next) => {
+  // eslint-disable-line
   res.status(404).json({ error: 'Not found' });
 });
 
-app.use((err, req, res, next) => { // eslint-disable-line
+app.use((err, req, res, next) => {
+  // eslint-disable-line
   console.error(err);
 
   if (err instanceof SyntaxError && err.status === 400 && 'body' in err) {
