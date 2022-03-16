@@ -2,14 +2,18 @@
 import pkg from '@faker-js/faker';
 import { insertCategory, insertProduct } from '../db.js';
 
-const { faker, commerce } = pkg;
+const { faker } = pkg;
+
+// catagories and products
 
 const catagoriesNumber = 5;
 const productNumber = 3;
+
 // fake categories
 const categories = [];
 let category;
 for (let i = 0; i < catagoriesNumber; i += 1) {
+  // eslint-disable-next-line no-constant-condition
   while (true) {
     category = faker.commerce.department();
     if (!categories.includes(category)) break;
@@ -20,7 +24,7 @@ for (let i = 0; i < catagoriesNumber; i += 1) {
 // fake product
 const products = [];
 let product;
-for (let j = 0; j < catagoriesNumber; j++) {
+for (let j = 0; j < catagoriesNumber; j += 1) {
   for (let i = 0; i < productNumber; i += 1) {
     while (true) {
       product = faker.commerce.product();
@@ -48,9 +52,10 @@ async function insertIntoCategory(i) {
   return result;
 }
 
-for (let i = 0; i < catagoriesNumber; i++) {
+let cd = 0;
+for (let i = 0; i < catagoriesNumber; i += 1) {
   const result = insertIntoCategory(i);
-  for (let j = 0; j < productNumber; j++) {
-    insertIntoProduct(j, result);
+  for (let j = 0; j < productNumber; j += 1) {
+    insertIntoProduct(cd += 1, result);
   }
 }

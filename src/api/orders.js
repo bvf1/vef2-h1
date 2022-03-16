@@ -16,7 +16,7 @@ export async function listOrders(req, res) {
   );
 
   const ordersWithPage = addPageMetadata(
-      orders,
+    orders,
     req.path,
     { offset, limit, length: orders.items.length },
   );

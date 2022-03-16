@@ -14,7 +14,7 @@ CREATE TABLE categories (
 
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
-  title VARCHAR(128) NOT NULL,
+  title VARCHAR(128) UNIQUE NOT NULL,
   price INTEGER NOT NULL,
   description TEXT NOT NULL,
   image VARCHAR(255) NOT NULL,
