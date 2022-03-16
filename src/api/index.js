@@ -121,6 +121,7 @@ router.get(
 
 router.post(
   '/orders',
+  nameValidator,
   validationCheck,
   catchErrors(createOrder),
 );
