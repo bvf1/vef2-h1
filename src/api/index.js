@@ -15,6 +15,12 @@ import {
 } from './users.js';
 
 import {
+  listOrders,
+  listOrder,
+  createOrder,
+} from './orders.js';
+
+import {
   adminValidator,
   episodeIdValidator,
   episodeValidators,
@@ -96,6 +102,20 @@ router.get(
   catchErrors(listProducts),
 );
 
+router.get(
+  '/orders/:id',
+  validateResourceExists(listOrder),
+  validationCheck,
+  returnResource,
+);
+
+router.post(
+  '/orders',
+  validateResourceExists(listUser),
+  validationCheck,
+  catchErrors(createOrder),
+);
+
 /* admin auth routes */
 
 router.get(
@@ -121,6 +141,14 @@ router.patch(
   adminValidator,
   validationCheck,
   catchErrors(updateUser),
+);
+
+router.get(
+  '/orders',
+  // requireAdmin,
+  pagingQuerystringValidator,
+  validationCheck,
+  listOrders,
 );
 
 /* user auth routes */
