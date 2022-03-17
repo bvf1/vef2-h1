@@ -1,4 +1,3 @@
-import { parse } from 'dotenv';
 import { pagedQuery, singleQuery, query } from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { logger } from '../utils/logger.js';

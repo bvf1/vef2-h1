@@ -39,8 +39,6 @@ pool.on('error', (err) => {
  * @property {Date} updated date product was updated
  */
 
-
-
 export async function query(_query, values = []) {
   const client = await pool.connect();
 
