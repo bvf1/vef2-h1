@@ -5,9 +5,7 @@ import express from 'express';
 import multer from 'multer';
 
 import {
-  requireAuthentication,
   requireAdmin,
-  addUserIfAuthenticated,
 } from '../auth/passport.js';
 import { catchErrors } from '../utils/catchErrors.js';
 import { readFile } from '../utils/fs-helpers.js';
@@ -33,9 +31,7 @@ import {
   pagingQuerystringValidator,
   validateResourceExists,
   nameValidator,
-  validateResourceNotExists,
   atLeastOneBodyValueValidator,
-  validateState,
   productValidators,
   categoryValidator,
   productTitleValidator,

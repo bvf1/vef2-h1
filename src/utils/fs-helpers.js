@@ -27,7 +27,6 @@ export async function exists(file) {
   }
   return ok;
 }
-/cart/:cartid/line/:id
 
 export async function isReadable(dir) {
   let readable = true;

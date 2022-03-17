@@ -1,7 +1,6 @@
 import {
-  pagedQuery, singleQuery, deleteQuery, query,
+  singleQuery, deleteQuery, query,
 } from '../db.js';
-import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { logger } from '../utils/logger.js';
 
 export async function createCart(req, res) {
@@ -97,7 +96,7 @@ export async function createCartLine(req) {
   return null;
 }
 
-export async function removeCart(req, res) {
+export async function removeCart(req) {
   const { id } = req.params.id;
 
   const q = `
@@ -125,7 +124,7 @@ export async function removeCart(req, res) {
   return null;
 }
 
-export async function listCartLine(req, res) {
+export async function listCartLine(req) {
   const { cartId, id } = req.params;
 
   const cartLines = await query(
