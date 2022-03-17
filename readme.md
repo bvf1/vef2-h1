@@ -173,11 +173,13 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
   - `PATCH` uppfærir fjölda í línu, aðeins fyrir línu í körfu með `id` jafnt `:cartid`
   - `DELETE` eyðir línu úr körfu, aðeins fyrir línu í körfu með `id` jafnt `:cartid`
 
-### Pöntun, vefþjónustur
-
 - `/orders`
   - `GET` skilar síðu af pöntunum, nýjustu pantanir fyrst, aðeins ef notandi er stjórnandi
+
   - `POST` býr til pöntun með viðeigandi gildum, skilar stöðu á pöntun og auðkenni
+
+  > curl -vH "Content-Type: application/json" -d '{"name": "fine"}' http://localhost:3001/orders
+
 - `/orders/:id`
   - `GET` skilar pöntun með öllum línum, gildum pöntunar, stöðu pöntunar og reiknuðu heildarverði körfu
 - `/orders/:id/status`

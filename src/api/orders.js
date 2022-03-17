@@ -1,3 +1,4 @@
+import xss from 'xss';
 import { pagedQuery, singleQuery, query } from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { logger } from '../utils/logger.js';
@@ -130,21 +131,33 @@ export async function updateOrderStatus(req, res) {
   return res.status(500).json(null);
 }
 
-export async function createOrder(req) {
-  const { name } = req.body;
+export async function insertOrder({
+  name,
+}) {
   const q = `
-    INSERT INTO orders
-      (name)
-    VALUES
-      ($1)
-    RETURNING id, created, name;
-  `;
-  const values = [name];
+  INSERT INTO orders
+  (id, name)
+  VALUES (gen_random_uuid(), $1)
+  RETURNING *`;
+  const values = [xss(name)];
+
+
   const result = await singleQuery(q, values);
 
-  if (result && result.rowCount === 1) {
-    return result.rows[0];
+  if (result) {
+    return result;
   }
 
   return null;
+}
+
+export async function createOrder(req, res) {
+  const { name } = req.body;
+
+  const order = await insertOrder({name});
+  console.log(order);
+
+  if (!order) return res.status(500).json({ msg: 'category was not created' });
+
+  return res.status(201).json(order);
 }

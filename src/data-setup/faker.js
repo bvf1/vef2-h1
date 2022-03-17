@@ -6,6 +6,7 @@ import { insertCategory, insertProduct } from '../db.js';
 import { logger } from '../utils/logger.js';
 import { PlaceImg } from './placeimg.js';
 import { uploadToCloudinarY } from '../utils/cloudinary.js';
+import { insertOrder } from '../api/orders.js';
 
 const { faker } = pkg;
 
@@ -122,3 +123,12 @@ for (let i = 0; i < catagoriesNumber; i += 1) {
     cd += 1;
   }
 }
+
+for (let index = 0; index < 2; index++) {
+  const noun = faker.hacker.noun();
+  console.log(noun);
+  insertOrder({name: noun});
+
+}
+
+

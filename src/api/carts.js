@@ -125,7 +125,9 @@ export async function removeCart(req) {
 }
 
 export async function listCartLine(req) {
-  const { cartId, id } = req.params;
+  console.log(here);
+  const { cart, line } = req.params;
+  console.log(cart, line);
 
   const cartLines = await query(
     `
