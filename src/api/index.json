@@ -5,10 +5,29 @@
       "methods": ["GET", "POST"]
     },
     "product": {
-      "href": "/tv/{id}",
+      "href": "/menu/{id}",
       "methods": ["GET", "PATCH", "DELETE"]
+    },
+    "category": {
+      "href": "/menu?category={category}",
+      "methods": ["GET"]
+    },
+    "search": {
+      "href": "/menu?category={category}",
+      "methods": ["GET"],
     }
   },
+  "categories" : {
+    "categories" : {
+      "href": "/categories",
+      "methods": ["GET", "POST"]
+    }
+  },
+  "category": {
+    "href": "/categories/{id}",
+    "methods": ["PATCH", "DELETE"]
+  }
+},
 
   "users": {
     "users": {
