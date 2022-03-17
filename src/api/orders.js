@@ -74,8 +74,8 @@ export async function listOrder(orderId) {
     return null;
   }
 
-  orderLines['orders'] = order;
-  orderLines['price'] = totalPrice;
+  orderLines.orders = order;
+  orderLines.price = totalPrice;
   return orderLines;
 }
 

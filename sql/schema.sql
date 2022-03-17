@@ -31,6 +31,7 @@ CREATE TABLE carts (
 );
 
 CREATE TABLE cartLines (
+  lineid SERIAL PRIMARY KEY,
   productID INTEGER NOT NULL,
   cartID UUID NOT NULL,
   constraint productID FOREIGN KEY (productID) REFERENCES products (id),
@@ -82,5 +83,8 @@ INSERT INTO orderStates (orderID, stateOfOrder) VALUES ('08626326-a55f-11ec-b909
 INSERT INTO orderLines (productID, orderID, quantity) VALUES (1, '08626326-a55f-11ec-b909-0242ac120002', 1);
 INSERT INTO orderLines (productID, orderID, quantity) VALUES (2, '08626326-a55f-11ec-b909-0242ac120002', 1);
 INSERT INTO orderLines (productID, orderID, quantity) VALUES (2, '08626326-a55f-11ec-b909-0242ac120002', 2);
+INSERT INTO cartLines (productID, cartID, quantity) VALUES (1, '36d55556-a55f-11ec-b909-0242ac120002', 1);
+INSERT INTO cartLines (productID, cartID, quantity) VALUES (2, '36d55556-a55f-11ec-b909-0242ac120002', 1);
+INSERT INTO cartLines (productID, cartID, quantity) VALUES (2, '36d55556-a55f-11ec-b909-0242ac120002', 2);
 
 */

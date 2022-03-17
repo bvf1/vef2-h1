@@ -20,6 +20,12 @@ import {
 
 import {
   createCart,
+  listCart,
+  createCartLine,
+  removeCart,
+  listCartLine,
+  updateCartLine,
+  removeCartLine,
 } from './carts.js';
 
 import {
@@ -33,6 +39,7 @@ import {
   productValidators,
   categoryValidator,
   productTitleValidator,
+  numberValidator,
 } from '../validation/validators.js';
 import { validationCheck } from '../validation/helpers.js';
 import {
@@ -144,7 +151,7 @@ router.get(
 
 router.post(
   '/orders',
-  // nameValidator,
+  nameValidator,
   validationCheck,
   catchErrors(createOrder),
 );
@@ -153,6 +160,47 @@ router.post(
   '/cart',
   validationCheck,
   catchErrors(createCart),
+);
+
+router.get(
+  '/cart/:id',
+  validateResourceExists(listCart),
+  validationCheck,
+  returnResource,
+);
+
+router.post(
+  '/cart/:id',
+  validateResourceExists(listCart),
+  numberValidator,
+  validationCheck,
+  catchErrors(createCartLine),
+);
+
+router.delete(
+  '/cart/:id',
+  validateResourceExists(listCart),
+  catchErrors(removeCart),
+);
+
+router.get(
+  '/cart/:id/line/:lineid',
+  validateResourceExists(listCartLine),
+  validationCheck,
+  returnResource,
+);
+
+router.patch(
+  '/cart/:id/line/:lineid',
+  validateResourceExists(listCartLine),
+  validationCheck,
+  catchErrors(updateCartLine),
+);
+
+router.delete(
+  '/cart/:id/line/:lineid',
+  validateResourceExists(listCartLine),
+  catchErrors(removeCartLine),
 );
 
 /* admin auth routes */
