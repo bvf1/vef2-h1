@@ -194,13 +194,14 @@ router.post(
 router.patch(
   '/menu/:id',
   requireAdmin,
-  // withMulter,
+  withMulter,
   productTitleValidator,
   productValidators,
   atLeastOneBodyValueValidator([
     'title',
     'price',
     'description',
+    'image',
     'category',
   ]),
   validationCheck,

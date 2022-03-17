@@ -16,7 +16,6 @@ const SQL_DIR = './../../sql';
 
 const path = dirname(fileURLToPath(import.meta.url));
 
-
 /**
  * Möppun á milli skráarnafns myndar og slóðar á Cloudinary
  * <skráarnafn> => <url>

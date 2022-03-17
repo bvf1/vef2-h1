@@ -114,8 +114,9 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
 
   > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDY4MDQxLCJleHAiOjE2NDc4MjgwNDF9.kDRdrgHSFxD9sCtGf6VgnY3yZOL3PiTXPAXyB29Zx9k" -d '{ "title": "apple", "price": 15, "description": "red apple", "category": "fruit"}'  http://localhost:3001/menu
 
+  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDgxNzI3LCJleHAiOjM3NjQ3NDgxNzI3fQ.2sJld_ZSo_S-2CfWzi2J3PXQcFrFP3OrhoZ446DK9-8" -F "title=banana" -F "price=15" -F "description=red apple" -F "image=@/home/bvf/programming/vef/fo.jpg" -F "category=Garden" http://localhost:3001/menu
 
-  - Bæði er í lagi að taka við gögnum sem `form data` þar sem bæði mynd og gögn eru send inn, eða sem `JSON` og útfæra annað route sem tekur við mynd og festir við vöru, t.d. `POST /menu/{id}/image`
+  - Tekið er við gögnum sem `form data` þar sem bæði mynd og gögn eru send inn
 
 - `/menu?category={category}`
   - `GET` Skilar síðu af vörum í flokk, raðað í dagsetningar röð, nýjustu vörur fyrst
@@ -132,7 +133,9 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
 
   - `PATCH` uppfærir vöru, aðeins ef notandi sem framkvæmir er stjórnandi
 
-  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDgxNzI3LCJleHAiOjM3NjQ3NDgxNzI3fQ.2sJld_ZSo_S-2CfWzi2J3PXQcFrFP3OrhoZ446DK9-8" -d '{ "title": "computer", "description": "best computer" }' -X PATCH http://localhost:3001/menucurl -H 'Accept: application/json' http://localhost:3001/menu/5
+  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDgxNzI3LCJleHAiOjM3NjQ3NDgxNzI3fQ.2sJld_ZSo_S-2CfWzi2J3PXQcFrFP3OrhoZ446DK9-8" -F "title=milk" -F "category=Garden" -X PATCH http://localhost:3001/menu/3
+
+
   - `DELETE` eyðir vöru, aðeins ef notandi sem framkvæmir er stjórnandi
 
   > url  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDU2Nzc1LCJleHAiOjE2NDc4MTY3NzV9.8NIm8jESlzjJO49smsvCusJxLSpICEJuILYhsG0SgOk" -X DELETE http://localhost:3001/menu/15
@@ -263,7 +266,7 @@ Setja skal upp eslint fyrir JavaScript. Engar villur skulu koma fram ef npm run 
 
 Setja skal upp jest til að skrifa test. Skrifa skal test fyrir a.m.k.:
 
-- fjóra endapunkta, þar sem
+- fjóra endapunkta, þar semvalidateImaimageValidatorgeMimetype
 - a.m.k. einn krefst auðkenningar
 - a.m.k. einn tekur við gögnum
 

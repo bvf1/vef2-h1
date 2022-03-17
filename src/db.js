@@ -39,51 +39,7 @@ pool.on('error', (err) => {
  * @property {Date} updated date product was updated
  */
 
-/**
- * Serie.
- * @typedef {Object} Serie
- * @property {number | null} id - ID of serie, if defined
- * @property {string} name Name of serie
- * @property {Date} airDate First aired
- * @property {boolean} inProduction Serie is in production?
- * @property {string | null} tagline Tagline, if defined for serie
- * @property {string} image Path to image
- * @property {string | null} description Description of serie
- * @property {string} language ISO 639-1 language code
- * @property {string | null} network Network series is shown on
- * @property {string | null} url URL of serie if defined
- */
 
-/**
- * Genre.
- * @typedef {Object} Genre
- * @property {number | null} id - ID of genre, if defined
- * @property {string} name Name of genre
- */
-
-/**
- * Season.
- * @typedef {Object} Season
- * @property {number | null} id - ID of season, if defined
- * @property {number | null} serieId - ID of serie, if defined
- * @property {string} name Name of season
- * @property {string} number Number of season
- * @property {Date} airDate First aired
- * @property {string | null} overview Overview, if defined for season
- * @property {string} poster Path to poster
- */
-
-/**
- * Episode.
- * @typedef {Object} Episode
- * @property {number | null} id - ID of episode, if defined
- * @property {number | null} serieId - ID of serie, if defined
- * @property {number | null} seasonId - ID of season, if defined
- * @property {string} name Name of episode
- * @property {string} number Number of episode
- * @property {Date} airDate First aired
- * @property {string | null} overview Overview, if defined for episode
- */
 
 export async function query(_query, values = []) {
   const client = await pool.connect();

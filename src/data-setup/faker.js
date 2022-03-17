@@ -1,11 +1,71 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import pkg from '@faker-js/faker';
-import express from 'express';
-import fs from 'fs';
-import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import { insertCategory, insertProduct } from '../db.js';
+import { logger } from '../utils/logger.js';
+import { PlaceImg } from './placeimg.js';
+import { uploadToCloudinarY } from '../utils/cloudinary.js';
 
 const { faker } = pkg;
+
+const CACHE_DIR = './../../.cache';
+const IMAGE_DIR = './../../data/img';
+
+const path = dirname(fileURLToPath(import.meta.url));
+const resolvedCacheDir = join(path, CACHE_DIR);
+const resolvedImageDir = join(path, IMAGE_DIR);
+
+const { TMDB_TOKEN: tmdbToken } = process.env;
+
+if (!tmdbToken) {
+  logger.error('Missing TMDB_TOKEN from env');
+  process.exit(-1);
+}
+
+let placeImg;
+
+try {
+  placeImg = new PlaceImg({
+    cacheDir: resolvedCacheDir,
+    imageDir: resolvedImageDir,
+    logger,
+    token: tmdbToken,
+  });
+} catch (e) {
+  logger.error('Unable to create placemg instance', e);
+}
+
+function getImageFromFaker() {
+  console.log("fun gIFrFa");
+  //const string = `${faker.image.food()}/${faker.commerce.productName()}`;
+  const string = `${faker.image.food()}?random=${Math.round(Math.random() * 1000)}`;
+  return string;
+}
+
+export function getImagesFromFaker(n) {
+  const images = [];
+  for (let index = 0; index < n; index += 1) {
+    console.log("fun getImagesFrF");
+const result = getImageFromFaker();
+console.log("result", result);
+  //  images.push(getImageFromFaker());
+  }
+
+  return images;
+}
+
+async function getImage() {
+  const imageFromFaker = await getImageFromFaker();
+
+  const imageFromPI = await placeImg.fetchImage(imageFromFaker);
+
+  const filepath = `.data/${imageFromPI.filename}`;
+
+  const result = await uploadToCloudinarY(filepath);
+  console.log("result", result);
+  return result;
+}
 
 // catagories and products
 
@@ -38,13 +98,18 @@ for (let j = 0; j < catagoriesNumber; j += 1) {
 }
 
 async function insertIntoProduct(index, cat) {
+  const result = await cat;
+
+  if (result === null) return;
   const { id } = await cat;
   const price = parseInt(faker.commerce.price(), 10);
+  const image = await getImage();
+  console.log('image',image);
   await insertProduct({
     title: products[index],
     price,
     description: faker.commerce.productDescription(),
-    image: faker.image.imageUrl(),
+    image,
     category: id,
   });
 }
@@ -54,7 +119,7 @@ async function insertIntoCategory(i) {
   const result = await insertCategory({ title });
   return result;
 }
-
+/*
 let cd = 0;
 for (let i = 0; i < catagoriesNumber; i += 1) {
   const result = insertIntoCategory(i);
@@ -62,18 +127,8 @@ for (let i = 0; i < catagoriesNumber; i += 1) {
     insertIntoProduct(cd, result);
     cd += 1;
   }
-}
+}*/
 
-const images = [];
-let image;
-for (let index = 0; index < 5; index++) {
-  while (true) {
-    image = faker.image.food();
-    if (!images.includes(image)) break;
-  }
-}
-
-const app = express();
-
-
+const result = insertIntoCategory(4);
+insertIntoProduct(0, result);
 

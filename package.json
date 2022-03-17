@@ -15,7 +15,7 @@
     "setup": "node ./src/setup/setup.js",
     "create-data": "node ./src/data-setup/setup.js",
     "faker": "node ./src/data-setup/faker.js",
-    "both":  "yarn setup && yarn faker"
+    "both": "yarn setup && yarn faker"
   },
   "repository": {
     "type": "git",
@@ -45,7 +45,7 @@
   "dependencies": {
     "@faker-js/faker": "^6.0.0",
     "bcrypt": "^5.0.0",
-    "cloudinary": "^1.25.0",
+    "cloudinary": "^1.28.1",
     "csv-parser": "^3.0.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",

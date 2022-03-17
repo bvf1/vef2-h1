@@ -2,6 +2,7 @@ import util from 'util';
 
 import { v2 as cloudinary } from 'cloudinary';
 import dotenv from 'dotenv';
+import { logger } from './logger.js';
 
 dotenv.config();
 
@@ -41,5 +42,24 @@ export async function listImages() {
 }
 
 export async function uploadImage(filepath) {
-  return uploadAsync(filepath);
+  console.log("uploadImage filepath",filepath);
+  const uploaded = await uploadAsync(filepath);
+  console.log(uploaded);
+  return uploaded;
+}
+
+export async function uploadToCloudinarY(imagePath) {
+  let image;
+  console.log("imagePath",imagePath);
+  try {
+    const uploadResult = await uploadImage(imagePath);
+    if (!uploadResult || !uploadResult.secure_url) {
+      throw new Error('no secure_url from cloudinary upload');
+    }
+    image = uploadResult.secure_url;
+  } catch (e) {
+    logger.error('Unable to upload file to cloudinary', e);
+    return null;
+  }
+  return image;
 }

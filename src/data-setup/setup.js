@@ -5,9 +5,9 @@ import { fileURLToPath } from 'url';
 import dotenv from 'dotenv';
 
 import { prepareDir } from '../utils/fs-helpers.js';
-import { logger } from '../utils/logger.js';
-import { MovieDb } from './moviedb.js';
-import { writeCsv } from './csv.js';
+import { logger } from '../utils/logger.js'
+import { PlaceImg } from './placeimg.js';
+import { getImagesFromFaker } from './faker.js';
 
 dotenv.config();
 
@@ -51,131 +51,23 @@ async function main() {
     process.exit(-1);
   }
 
-  let movieDb;
-
+  let placeImg;
   try {
-    movieDb = new MovieDb({
+    placeImg = new PlaceImg({
       cacheDir: resolvedCacheDir,
       imageDir: resolvedImageDir,
       logger,
       token: tmdbToken,
     });
   } catch (e) {
-    logger.error('Unable to create moviedb instance', e);
-    return process.exit(-1);
+    logger.error('Unable to create placemg instance', e);
   }
 
-  const popular = await movieDb.fetchPopular();
-
-  const series = [];
-
-  let serieId = 1;
-
-  // Use loop here since using forEach would trigger *all* async operations to
-  // run at the same time, we're fine with doing it in serial order.
-  for (const { id, name } of popular.results) {
-    logger.verbose(`Processing serie "${name}"`);
-    const serieData = await movieDb.fetchSerie(id);
-    const serieImage = await movieDb.fetchImage(serieData.poster_path);
-
-    const serie = {
-      id: serieId,
-      name: serieData.name,
-      airDate: serieData.first_air_date,
-      genres: serieData.genres.map((i) => i.name).join(','),
-      inProduction: serieData.in_production,
-      tagline: serieData.tagline,
-      image: serieImage.filename,
-      description: serieData.overview,
-      language: serieData.languages[0],
-      network: serieData.networks[0].name,
-      homepage: serieData.homepage,
-      seasons: [],
-    };
-
-    for (const { season_number: seasonNumber } of serieData.seasons) {
-      // Season 0 is specials etc, skip those
-      if (seasonNumber === 0) {
-        // eslint-disable-next-line no-continue
-        continue;
-      }
-
-      logger.verbose(`  Season ${seasonNumber}`);
-      const seasonData = await movieDb.fetchSeason(id, seasonNumber);
-      const seasonImage = await movieDb.fetchImage(seasonData.poster_path);
-
-      const season = {
-        name: seasonData.name,
-        number: seasonData.season_number,
-        airDate: seasonData.air_date,
-        overview: seasonData.overview,
-        poster: seasonImage.filename,
-        serie: serieData.name,
-        serieId,
-        episodes: [],
-      };
-
-      for (const episodeData of seasonData.episodes) {
-        const episode = {
-          name: episodeData.name,
-          number: episodeData.episode_number,
-          airDate: episodeData.airDate,
-          overview: episodeData.overview,
-          season: seasonData.season_number,
-          serie: serieData.name,
-          serieId,
-        };
-
-        season.episodes.push(episode);
-      }
-
-      serie.seasons.push(season);
-    }
-
-    series.push(serie);
-    serieId += 1;
+  const numberOfImages = 20;
+  const images = getImagesFromFaker(numberOfImages);
+  for (let i = 0; i < numberOfImages; i++) {
+    conole.log(await placeImg.fetchImage(images[i]));
   }
-
-  const allSeries = [];
-  const allSeasons = [];
-  const allEpisodes = [];
-
-  series.forEach((serie) => {
-    serie.seasons.forEach((season) => {
-      season.episodes.forEach((episode) => {
-        allEpisodes.push(episode);
-      });
-      // eslint-disable-next-line no-param-reassign
-      delete season.episodes;
-      allSeasons.push(season);
-    });
-    // eslint-disable-next-line no-param-reassign
-    delete serie.seasons;
-    allSeries.push(serie);
-  });
-
-  const episodesCsvFile = join(resolvedDataDir, 'episodes.csv');
-  try {
-    await writeCsv(allEpisodes, episodesCsvFile);
-  } catch (e) {
-    logger.error(`Unable to write CSV file "${episodesCsvFile}"`, e);
-  }
-
-  const seriesCsvFile = join(resolvedDataDir, 'series.csv');
-  try {
-    await writeCsv(allSeries, seriesCsvFile);
-  } catch (e) {
-    logger.error(`Unable to write CSV file "${seriesCsvFile}"`, e);
-  }
-
-  const seasonCsvFile = join(resolvedDataDir, 'seasons.csv');
-  try {
-    await writeCsv(allSeasons, seasonCsvFile);
-  } catch (e) {
-    logger.error(`Unable to write CSV file "${seasonCsvFile}"`, e);
-  }
-
-  return true;
 }
 
 main().catch((e) => logger.error(e));

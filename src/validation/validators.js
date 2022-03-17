@@ -209,7 +209,7 @@ export const urlOptionalValidator = body('url')
   .withMessage('url must be a string');
 // TODO custom that makes sure it exists
 
-const MIMETYPES = ['image/jpeg', 'image/png', 'image/gif'];
+const MIMETYPES = ['image/jpeg', 'image/png'];
 
 function validateImageMimetype(mimetype) {
   return MIMETYPES.indexOf(mimetype.toLowerCase()) >= 0;
@@ -245,6 +245,7 @@ export const productValidators = [
   productTitleValidator,
   priceValidator,
   descriptionValidator,
+  imageValidator,
   categoryExistsValidator,
 ];
 

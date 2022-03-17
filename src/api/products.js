@@ -13,7 +13,7 @@ import {
   listProduct,
 } from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
-import { uploadImage } from '../utils/cloudinary.js';
+import { uploadImage, uploadToCloudinarY } from '../utils/cloudinary.js';
 import { isString } from '../utils/isString.js';
 import { logger } from '../utils/logger.js';
 import { listOrders } from './orders.js';
@@ -66,37 +66,22 @@ export async function createProduct(req, res) {
     title,
     price,
     description,
-    image,
     category,
   } = req.body;
 
-  let picture;
-  try {
-    const uploadResult = await uploadImage(imagePath);
-    if (!uploadResult || !uploadResult.secure_url) {
-      throw new Error('no secure_url from cloudinary upload');
-    }
-    picture = uploadResult.secure_url;
-  } catch (e) {
-    logger.error('Unable to upload file to cloudinary', e);
-    return res.status(500).end();
-  }
-
-  /*
-  const {
-    title = '', price = '', description = '', category = '',
-  } = req.body;
+  const { path: imagePath } = req.file;
+  const image = await uploadToCloudinarY(res, imagePath);
 
   const result = await listCategoryByTitle({ title: category });
   const { id } = result;
 
   const product = await insertProduct({
-    title, price, description, category: id,
+    title, price, description, image, category: id,
   });
 
   if (!product) return res.status(500);
 
-  return res.status(201).json(product); */
+  return res.status(201).json(product);
 }
 
 export async function listCategory(req, res) {
@@ -114,7 +99,8 @@ export async function listCategory(req, res) {
 export async function updateProduct(req, res) {
   const { id } = req.params;
   const { body } = req;
-  // const { file: { path: imagePath } = {} } = req;
+  const { file: { path: imagePath } = {} } = req;
+  console.log(imagePath);
 
   let categoryId;
 
@@ -139,7 +125,7 @@ export async function updateProduct(req, res) {
     isString(categoryId) ? categoryId : null,
 
   ];
-  /*
+
   if (imagePath) {
     // TODO refactor into helper in cloudinary.js, same as above
     let poster;
@@ -156,7 +142,7 @@ export async function updateProduct(req, res) {
 
     fields.push('image');
     values.push(poster);
-  } */
+  }
 
   const result = await conditionalUpdate('products', id, fields, values);
 
