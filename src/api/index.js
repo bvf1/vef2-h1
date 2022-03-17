@@ -26,6 +26,7 @@ import {
   adminValidator,
   pagingQuerystringValidator,
   validateResourceExists,
+  nameValidator,
   validateResourceNotExists,
   atLeastOneBodyValueValidator,
   validateState,
@@ -121,6 +122,13 @@ router.get(
 router.get(
   '/menu/:id',
   validateResourceExists(listProduct),
+  validationCheck,
+  returnResource,
+);
+
+router.get(
+  '/orders/:id/status',
+  validateResourceExists(listOrderStatus),
   validationCheck,
   returnResource,
 );

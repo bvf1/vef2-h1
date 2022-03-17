@@ -20,5 +20,7 @@ module.exports = {
     'no-console': ['error', { allow: ['info', 'warn', 'error'] }],
 
     'no-restricted-syntax': ['error', 'WithStatement'],
+
+    'linebreak-style': 'off',
   },
 };
