@@ -1,3 +1,4 @@
+import xss from 'xss';
 import { pagedQuery, singleQuery } from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { logger } from '../utils/logger.js';
@@ -24,24 +25,31 @@ export async function listUsers(req, res) {
   return res.json(usersWithPage);
 }
 
-export async function listUser(userId) {
-  const user = await singleQuery(
-    `
+export async function listUser(req, res) {
+  const id = req;
+
+  const q = `
       SELECT
-        id, username, email, admin, created, updated
+        id, username, email, admin
       FROM
         users
       WHERE
         id = $1
-    `,
-    [userId],
-  );
+    `;
+  const values = [xss(id)];
 
-  if (!user) {
-    return null;
+  try {
+    const user = singleQuery(q, values);
+
+    if (!user) return null;
+    return user;
+  } catch (e) {
+    logger.error(
+      'unable to get user"',
+      e,
+    );
   }
-
-  return user;
+  return null;
 }
 
 export async function updateUser(req, res) {

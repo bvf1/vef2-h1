@@ -1,5 +1,8 @@
 // eslint-disable-next-line import/no-extraneous-dependencies
 import pkg from '@faker-js/faker';
+import express from 'express';
+import fs from 'fs';
+import path, { dirname } from 'path';
 import { insertCategory, insertProduct } from '../db.js';
 
 const { faker } = pkg;
@@ -60,3 +63,17 @@ for (let i = 0; i < catagoriesNumber; i += 1) {
     cd += 1;
   }
 }
+
+const images = [];
+let image;
+for (let index = 0; index < 5; index++) {
+  while (true) {
+    image = faker.image.food();
+    if (!images.includes(image)) break;
+  }
+}
+
+const app = express();
+
+
+

@@ -147,8 +147,8 @@ export const categoryTitleValidator = body('title')
   .custom(async (title) => {
     const categories = await listCategoryNames();
 
-    const hasValue = (categories.some((item) => (item === title)));
-
+    const hasValue = categories.find((item) => item.title === title);
+    // const hasValue = (categories.some((item) => (item === "home")));
     if (hasValue) {
       return Promise.reject(new Error('Category Name already exists'));
     }
@@ -156,11 +156,12 @@ export const categoryTitleValidator = body('title')
   });
 
 export const productTitleValidator = body('title')
+  .if(isPatchingAllowAsOptional)
   .isLength({ min: 1, max: 128 })
   .withMessage('title is required, max 128')
   .custom(async (title) => {
-    const result = await listProductNames();
-    const hasValue = (result.some((item) => (item === title)));
+    const result = await listProductNames({ title });
+    const hasValue = result.find((item) => item.title === title);
 
     if (hasValue) {
       return Promise.reject(new Error('Product Name already exists'));
@@ -169,12 +170,13 @@ export const productTitleValidator = body('title')
   });
 
 export const categoryExistsValidator = body('category')
+  .if(isPatchingAllowAsOptional)
   .isLength({ min: 1, max: 128 })
   .withMessage('category is required, max 128')
   .custom(async (category) => {
     const categories = await listCategoryNames();
 
-    const hasValue = (categories.some((item) => (item === category)));
+    const hasValue = categories.find((item) => item.title === category);
     if (!hasValue) {
       return Promise.reject(new Error('Category doesnt exist'));
     }
@@ -182,6 +184,7 @@ export const categoryExistsValidator = body('category')
   });
 
 export const priceValidator = body('price')
+  .if(isPatchingAllowAsOptional)
   .isInt({ min: 1 })
   .withMessage('number must be an integer larger than 0');
 

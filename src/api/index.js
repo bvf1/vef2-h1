@@ -20,7 +20,7 @@ import {
 
 import {
   createCart,
-} from './carts.js'
+} from './carts.js';
 
 import {
   adminValidator,
@@ -31,10 +31,16 @@ import {
   validateState,
   productValidators,
   categoryValidator,
+  productTitleValidator,
 } from '../validation/validators.js';
 import { validationCheck } from '../validation/helpers.js';
-import { createProduct, listProducts } from './products.js';
-import { createCategory, listCategories } from './categories.js';
+import {
+  createProduct, listProducts, removeProduct, updateProduct,
+} from './products.js';
+import {
+  createCategory, listCategories, listCategory, patchCategory, productsByCategory, removeCategory,
+} from './categories.js';
+import { listProduct } from '../db.js';
 
 /**
  * Langt skjal! En hér erum við að útbúa hverja og einasta route (fyrir utan
@@ -100,6 +106,25 @@ router.get(
   catchErrors(listProducts),
 );
 
+router.get('/menu/{id}', async (req, res) => {
+  console.log('here');
+  console.log(req.image);
+});
+
+router.get(
+  '/menu?search={query}',
+  pagingQuerystringValidator,
+  validationCheck,
+  catchErrors(productsByCategory),
+);
+
+router.get(
+  '/menu/:id',
+  validateResourceExists(listProduct),
+  validationCheck,
+  returnResource,
+);
+
 router.get(
   '/categories',
   pagingQuerystringValidator,
@@ -116,7 +141,7 @@ router.get(
 
 router.post(
   '/orders',
-  nameValidator,
+  // nameValidator,
   validationCheck,
   catchErrors(createOrder),
 );
@@ -157,9 +182,32 @@ router.patch(
 router.post(
   '/menu',
   requireAdmin,
+  withMulter,
   productValidators,
   validationCheck,
   catchErrors(createProduct),
+);
+
+router.patch(
+  '/menu/:id',
+  requireAdmin,
+  // withMulter,
+  productTitleValidator,
+  productValidators,
+  atLeastOneBodyValueValidator([
+    'title',
+    'price',
+    'description',
+    'category',
+  ]),
+  validationCheck,
+  catchErrors(updateProduct),
+);
+
+router.delete(
+  '/menu/:id',
+  requireAdmin,
+  catchErrors(removeProduct),
 );
 
 router.post(
@@ -168,6 +216,21 @@ router.post(
   categoryValidator,
   validationCheck,
   catchErrors(createCategory),
+);
+
+router.patch(
+  '/categories/:id',
+  requireAdmin,
+  categoryValidator,
+  validateResourceExists(listCategory),
+  validationCheck,
+  catchErrors(patchCategory),
+);
+
+router.delete(
+  '/categories/:id',
+  requireAdmin,
+  catchErrors(removeCategory),
 );
 
 router.get(

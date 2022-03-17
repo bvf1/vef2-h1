@@ -22,7 +22,7 @@ CREATE TABLE products (
   category INTEGER NOT NULL,
   created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
   updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  constraint category FOREIGN KEY (category) REFERENCES categories (id)
+  constraint category FOREIGN KEY (category) REFERENCES categories (id) ON DELETE CASCADE
 );
 
 CREATE TABLE carts (

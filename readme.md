@@ -116,15 +116,27 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
 
 
   - Bæði er í lagi að taka við gögnum sem `form data` þar sem bæði mynd og gögn eru send inn, eða sem `JSON` og útfæra annað route sem tekur við mynd og festir við vöru, t.d. `POST /menu/{id}/image`
+
 - `/menu?category={category}`
   - `GET` Skilar síðu af vörum í flokk, raðað í dagsetningar röð, nýjustu vörur fyrst
 - `/menu?search={query}`
   - `GET` Skilar síðu af vörum þar sem `{query}` er í titli eða lýsingu, raðað í dagsetningar röð, nýjustu vörur fyrst
   - Það er hægt að senda bæði `search` og `category` í einu
+
+  > curl -G -d 'search=Garden' -d 'description=pp' http://localhost:3001/menu
+
 - `/menu/:id`
   - `GET` sækir vöru
+
+  > curl -H 'Accept: application/json' http://localhost:3001/menu/5
+
   - `PATCH` uppfærir vöru, aðeins ef notandi sem framkvæmir er stjórnandi
+
+  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDgxNzI3LCJleHAiOjM3NjQ3NDgxNzI3fQ.2sJld_ZSo_S-2CfWzi2J3PXQcFrFP3OrhoZ446DK9-8" -d '{ "title": "computer", "description": "best computer" }' -X PATCH http://localhost:3001/menucurl -H 'Accept: application/json' http://localhost:3001/menu/5
   - `DELETE` eyðir vöru, aðeins ef notandi sem framkvæmir er stjórnandi
+
+  > url  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDU2Nzc1LCJleHAiOjE2NDc4MTY3NzV9.8NIm8jESlzjJO49smsvCusJxLSpICEJuILYhsG0SgOk" -X DELETE http://localhost:3001/menu/15
+
 - `/categories`
   - `GET` skilar síðu af flokkum
 
@@ -135,8 +147,15 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
   > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDY4MDQxLCJleHAiOjE2NDc4MjgwNDF9.kDRdrgHSFxD9sCtGf6VgnY3yZOL3PiTXPAXyB29Zx9k" -d '{ "title": "appliances"}'  http://localhost:3001/categories
 
 - `/categories/:id`
+
   - `PATCH` uppfærir flokk, aðeins ef notandi sem framkvæmir er stjórnandi
+
+  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDU2Nzc1LCJleHAiOjE2NDc4MTY3NzV9.8NIm8jESlzjJO49smsvCusJxLSpICEJuILYhsG0SgOk" -d '{ "title": "vegetables"}' -X PATCH http://localhost:3001/categories/1
+
   - `DELETE` eyðir flokk, aðeins ef notandi sem framkvæmir er stjórnandi
+
+
+  > curl  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDU2Nzc1LCJleHAiOjE2NDc4MTY3NzV9.8NIm8jESlzjJO49smsvCusJxLSpICEJuILYhsG0SgOk" -X DELETE http://localhost:3001/categories/5
 
 ### Karfa, vefþjónustur
 
@@ -174,7 +193,7 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
 
   - `GET` skilar notanda, aðeins ef notandi sem framkvæmir er stjórnandi
 
-  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3MzQ4OTk2LCJleHAiOjE2NDczNTI1OTZ9.FdyUQhkT0NsydoafKrNUPdRbvhoCImOuQ42jqWQNE30" http://localhost:3001/users/2
+  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDgxNzI3LCJleHAiOjM3NjQ3NDgxNzI3fQ.2sJld_ZSo_S-2CfWzi2J3PXQcFrFP3OrhoZ446DK9-8" http://localhost:3001/users/1
 
   - `PATCH` breytir hvort notandi sé stjórnandi eða ekki, aðeins ef notandi sem framkvæmir er stjórnandi og er ekki að breyta sér sjálfum
 
