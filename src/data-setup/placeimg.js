@@ -74,15 +74,12 @@ export class PlaceImg {
   }
 
   async fetchImage(imagePath) {
-    console.log("jifowjfoiew");
-    console.log("in imagePath",imagePath);
     const filename = basename(imagePath);
     const result = await this.fetchOrCached(imagePath, this.imageDir, {
       cacheKey: filename,
       binary: true,
     });
 
-    console.log("filename",filename);
     return { buffer: result, filename };
   }
 }

@@ -37,7 +37,6 @@ try {
 }
 
 function getImageFromFaker() {
-  console.log("fun gIFrFa");
  // const string = `${faker.image.food()}?random=${Math.round(Math.random() * 1000)}`;
   const string = `${faker.image.food()}random${Math.round(Math.random() * 1000)}`;
   return string;
@@ -47,8 +46,6 @@ export function getImagesFromFaker(n) {
   const images = [];
   for (let index = 0; index < n; index += 1) {
     const result = getImageFromFaker();
-    console.log("result", result);
-    //  images.push(getImageFromFaker());
   }
 
   return images;
@@ -102,7 +99,6 @@ async function insertIntoProduct(index, cat) {
   const { id } = await cat;
   const price = parseInt(faker.commerce.price(), 10);
   const image = await getImage();
-  console.log('image',image);
   await insertProduct({
     title: products[index],
     price,
@@ -126,4 +122,3 @@ for (let i = 0; i < catagoriesNumber; i += 1) {
     cd += 1;
   }
 }
-

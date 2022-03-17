@@ -42,15 +42,12 @@ export async function listImages() {
 }
 
 export async function uploadImage(filepath) {
-  console.log("uploadImage filepath",filepath);
   const uploaded = await uploadAsync(filepath);
-  console.log(uploaded);
   return uploaded;
 }
 
 export async function uploadToCloudinarY(imagePath) {
   let image;
-  console.log("imagePath",imagePath);
   try {
     const uploadResult = await uploadImage(imagePath);
     if (!uploadResult || !uploadResult.secure_url) {

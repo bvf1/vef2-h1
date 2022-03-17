@@ -28,8 +28,8 @@ export async function listProducts(req, res) {
     category = await listCategoryByTitle({ title: xss(search) });
     if (category !== null) {
       values.push(category.id);
+      where += 'WHERE category = $1';
     }
-    where += 'WHERE category = $1';
   }
 
   if (description) {
@@ -100,7 +100,6 @@ export async function updateProduct(req, res) {
   const { id } = req.params;
   const { body } = req;
   const { file: { path: imagePath } = {} } = req;
-  console.log(imagePath);
 
   let categoryId;
 
