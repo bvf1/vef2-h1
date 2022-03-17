@@ -14,7 +14,7 @@
     },
     "search": {
       "href": "/menu?category={category}",
-      "methods": ["GET"],
+      "methods": ["GET"]
     }
   },
   "categories" : {
