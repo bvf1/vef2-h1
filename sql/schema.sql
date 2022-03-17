@@ -62,6 +62,13 @@ CREATE TABLE orderStates (
   created TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE stateChanges (
+  orderID UUID NOT NULL,
+  constraint orderID FOREIGN KEY (orderID) REFERENCES orders (id),
+  newState orderState,
+  changed TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE users (
   id SERIAL PRIMARY KEY,
   username VARCHAR(256) NOT NULL UNIQUE,
@@ -86,5 +93,6 @@ INSERT INTO orderLines (productID, orderID, quantity) VALUES (2, '08626326-a55f-
 INSERT INTO cartLines (productID, cartID, quantity) VALUES (1, '36d55556-a55f-11ec-b909-0242ac120002', 1);
 INSERT INTO cartLines (productID, cartID, quantity) VALUES (2, '36d55556-a55f-11ec-b909-0242ac120002', 1);
 INSERT INTO cartLines (productID, cartID, quantity) VALUES (2, '36d55556-a55f-11ec-b909-0242ac120002', 2);
-
+INSERT INTO stateChanges (orderID, stateOfOrder, changed) VALUES ('08626326-a55f-11ec-b909-0242ac120002', 'NEW', '2022-03-17 18:19:19.05235+00');
+INSERT INTO stateChanges (orderID, newState) VALUES ('08626326-a55f-11ec-b909-0242ac120002', 'PREPARE');
 */
