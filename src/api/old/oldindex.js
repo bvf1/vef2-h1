@@ -93,7 +93,12 @@ function withMulter(req, res, next) {
     return next();
   });
 }
-
+{
+  "title": "strawberry",
+  "price": 15,
+  "description": "apple",
+  "category": "Garden"
+}
 export const router = express.Router();
 
 function returnResource(req, res) {

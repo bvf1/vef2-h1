@@ -144,7 +144,6 @@ export async function end() {
  * @param {Category} category Category to create
  * @returns {Category} Category created, with ID
  */
-
 export async function insertCategory({
   title,
 }) {
@@ -164,6 +163,31 @@ export async function insertCategory({
   return null;
 }
 
+export async function deleteCategory({ title, id }) {
+  const q = `
+    DELETE FROM
+      categories
+    WHERE
+      "id" = $1
+  `;
+  const values = [id];
+
+  try {
+    const deletionRowCount = await deleteQuery(q, values);
+
+    if (deletionRowCount === 0) {
+      return id;
+    }
+    return null;
+  } catch (e) {
+    logger.error(
+      `unable to delete category ${id}`,
+      e,
+    );
+  }
+  return id;
+}
+
 export async function listCategoryNames() {
   const q = `
     SELECT
@@ -181,7 +205,47 @@ export async function listCategoryNames() {
   return null;
 }
 
-export async function listCategoryByTitle({title}) {
+export async function listCategoryById({ id }) {
+  const category = await singleQuery(
+    `
+      SELECT
+        *
+      FROM
+        categories
+      WHERE
+        id = $1
+    `,
+    [id],
+  );
+
+  if (!category) {
+    return null;
+  }
+
+  return category;
+}
+
+export async function updateCategory({ title, id }) {
+  const category = await singleQuery(
+    `
+    UPDATE categories
+      SET title = $1
+    WHERE
+      "id" = $2
+    RETURNING
+      *
+    `,
+    [xss(title), id],
+  );
+
+  if (!category) {
+    return null;
+  }
+
+  return category;
+}
+
+export async function listCategoryByTitle({ title }) {
   const category = await singleQuery(
     `
       SELECT
@@ -200,7 +264,6 @@ export async function listCategoryByTitle({title}) {
 
   return category;
 }
-
 
 /**
  * Insert a product
@@ -234,15 +297,110 @@ export async function insertProduct({
   return null;
 }
 
-export async function listProductNames() {
+export async function deleteProduct({ id }) {
+  const q = `
+    DELETE FROM
+      products
+    WHERE
+      "id" = $1
+  `;
+  const values = [id];
+
+  try {
+    const deletionRowCount = await deleteQuery(q, values);
+
+    if (deletionRowCount === 0) {
+      return id;
+    }
+    return null;
+  } catch (e) {
+    logger.error(
+      `unable to delete product ${id}`,
+      e,
+    );
+  }
+  return id;
+}
+
+export async function listProduct(req) {
+  const id = req;
+  const q = `
+    SELECT
+      *
+    FROM
+      products
+    WHERE
+      id = $1
+  `;
+  const values = [xss(id)];
+
+  try {
+    const result = await singleQuery(q, values);
+
+    return result;
+  } catch (e) {
+    logger.error('Error getting product', e);
+  }
+
+  return null;
+}
+
+export async function listProductById(req) {
+  const id = req;
+  const q = `
+    SELECT
+      *
+    FROM
+      products
+    WHERE
+      id = $1
+  `;
+  const values = [xss(id)];
+
+  try {
+    const result = await singleQuery(q, values);
+
+    return result;
+  } catch (e) {
+    logger.error('Error getting product', e);
+  }
+
+  return null;
+}
+
+export async function listProductNames({ title }) {
   const q = `
     SELECT
       title
     FROM
       products
+    WHERE
+      title = $1
   `;
+  const values = [xss(title)];
   try {
-    const result = await query(q);
+    const result = await query(q, values);
+    return result.rows;
+  } catch (e) {
+    logger.error('Error getting product names', e);
+  }
+
+  return null;
+}
+
+export async function listProductsByCategory({ title }) {
+  const q = `
+    SELECT
+      title
+    FROM
+      products
+    WHERE
+      title = $1
+  `;
+
+  const values = [xss(title)];
+  try {
+    const result = await query(q, values);
     return result.rows;
   } catch (e) {
     logger.error('Error getting product names', e);
