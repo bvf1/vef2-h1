@@ -38,18 +38,17 @@ try {
 
 function getImageFromFaker() {
   console.log("fun gIFrFa");
-  //const string = `${faker.image.food()}/${faker.commerce.productName()}`;
-  const string = `${faker.image.food()}?random=${Math.round(Math.random() * 1000)}`;
+ // const string = `${faker.image.food()}?random=${Math.round(Math.random() * 1000)}`;
+  const string = `${faker.image.food()}random${Math.round(Math.random() * 1000)}`;
   return string;
 }
 
 export function getImagesFromFaker(n) {
   const images = [];
   for (let index = 0; index < n; index += 1) {
-    console.log("fun getImagesFrF");
-const result = getImageFromFaker();
-console.log("result", result);
-  //  images.push(getImageFromFaker());
+    const result = getImageFromFaker();
+    console.log("result", result);
+    //  images.push(getImageFromFaker());
   }
 
   return images;
@@ -60,10 +59,9 @@ async function getImage() {
 
   const imageFromPI = await placeImg.fetchImage(imageFromFaker);
 
-  const filepath = `.data/${imageFromPI.filename}`;
+  const filepath = `data/img/${imageFromPI.filename}`;
 
   const result = await uploadToCloudinarY(filepath);
-  console.log("result", result);
   return result;
 }
 
@@ -119,7 +117,7 @@ async function insertIntoCategory(i) {
   const result = await insertCategory({ title });
   return result;
 }
-/*
+
 let cd = 0;
 for (let i = 0; i < catagoriesNumber; i += 1) {
   const result = insertIntoCategory(i);
@@ -127,8 +125,5 @@ for (let i = 0; i < catagoriesNumber; i += 1) {
     insertIntoProduct(cd, result);
     cd += 1;
   }
-}*/
-
-const result = insertIntoCategory(4);
-insertIntoProduct(0, result);
+}
 

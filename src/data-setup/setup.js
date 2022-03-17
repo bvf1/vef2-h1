@@ -63,7 +63,7 @@ async function main() {
     logger.error('Unable to create placemg instance', e);
   }
 
-  const numberOfImages = 20;
+  const numberOfImages = 200;
   const images = getImagesFromFaker(numberOfImages);
   for (let i = 0; i < numberOfImages; i++) {
     conole.log(await placeImg.fetchImage(images[i]));
