@@ -80,6 +80,7 @@ export async function listOrder(orderId) {
 }
 
 export async function listOrderStatus(orderId) {
+  console.log("list");
   const orderStatus = await singleQuery(
     `
     SELECT

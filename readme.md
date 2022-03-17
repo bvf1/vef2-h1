@@ -130,7 +130,7 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
   - `GET` sækir vöru
 
   > curl -H 'Accept: application/json' http://localhost:3001/menu/5
-
+curl -H 'Accept: application/json' http://localhost:3001/menu/5
   - `PATCH` uppfærir vöru, aðeins ef notandi sem framkvæmir er stjórnandi
 
   > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDgxNzI3LCJleHAiOjM3NjQ3NDgxNzI3fQ.2sJld_ZSo_S-2CfWzi2J3PXQcFrFP3OrhoZ446DK9-8" -F "title=milk" -F "category=Garden" -X PATCH http://localhost:3001/menu/3
@@ -182,6 +182,10 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
 
 - `/orders/:id`
   - `GET` skilar pöntun með öllum línum, gildum pöntunar, stöðu pöntunar og reiknuðu heildarverði körfu
+
+  > -H 'Accept: application/json' http://localhost:3001/orders/85619a86-8cc3-49fb-8444-c1220c4c78c8
+
+
 - `/orders/:id/status`
   - `GET` skilar pöntun með stöðu pöntunar og lista af öllum stöðubreytingum hennar
   - `POST` uppfærir stöðu pöntunar, aðeins ef notandi er stjórnandi (var upprunalega `PATCH` en `POST` á frekar við)
