@@ -31,6 +31,7 @@ CREATE TABLE carts (
 );
 
 CREATE TABLE cartLines (
+  lineid SERIAL PRIMARY KEY,
   productID INTEGER NOT NULL,
   cartID UUID NOT NULL,
   constraint productID FOREIGN KEY (productID) REFERENCES products (id),
@@ -74,8 +75,16 @@ CREATE TABLE users (
 /*
 INSERT INTO carts (id) VALUES ('36d55556-a55f-11ec-b909-0242ac120002');
 INSERT INTO categories (id, title) VALUES (1, 'Farartæki');
+INSERT INTO categories (id, title) VALUES (2, 'Föt');
 INSERT INTO orders (id, name) VALUES ('08626326-a55f-11ec-b909-0242ac120002', 'Order 1');
 INSERT INTO products (id, title, price, description, image, category) VALUES (1, 'Hjól', 50, 'Fyrir hjólara', 'https://i.imgur.com/ZZDTdV0.jpg', 1);
+INSERT INTO products (id, title, price, description, image, category) VALUES (2, 'Skór', 10, 'Gengur í þeim', 'https://i.imgur.com/iqKDft8.jpg?1', 2);
 INSERT INTO orderStates (orderID, stateOfOrder) VALUES ('08626326-a55f-11ec-b909-0242ac120002', 'NEW');
 INSERT INTO orderLines (productID, orderID, quantity) VALUES (1, '08626326-a55f-11ec-b909-0242ac120002', 1);
+INSERT INTO orderLines (productID, orderID, quantity) VALUES (2, '08626326-a55f-11ec-b909-0242ac120002', 1);
+INSERT INTO orderLines (productID, orderID, quantity) VALUES (2, '08626326-a55f-11ec-b909-0242ac120002', 2);
+INSERT INTO cartLines (productID, cartID, quantity) VALUES (1, '36d55556-a55f-11ec-b909-0242ac120002', 1);
+INSERT INTO cartLines (productID, cartID, quantity) VALUES (2, '36d55556-a55f-11ec-b909-0242ac120002', 1);
+INSERT INTO cartLines (productID, cartID, quantity) VALUES (2, '36d55556-a55f-11ec-b909-0242ac120002', 2);
+
 */
