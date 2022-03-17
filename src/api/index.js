@@ -107,11 +107,6 @@ router.get(
   catchErrors(listProducts),
 );
 
-router.get('/menu/{id}', async (req, res) => {
-  console.log('here');
-  console.log(req.image);
-});
-
 router.get(
   '/menu?search={query}',
   pagingQuerystringValidator,
