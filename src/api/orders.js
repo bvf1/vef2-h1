@@ -1,4 +1,5 @@
-import { pagedQuery, singleQuery } from '../db.js';
+import { parse } from 'dotenv';
+import { pagedQuery, singleQuery, query } from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { logger } from '../utils/logger.js';
 
@@ -41,11 +42,41 @@ export async function listOrder(orderId) {
     [orderId],
   );
 
+  const orderLines = await query(
+    `
+    SELECT
+      *
+    FROM
+        orderlines
+    WHERE
+        orderid = $1
+    `,
+    [orderId],
+  );
+
+  const totalPrice = await singleQuery(
+    `
+    SELECT
+      SUM(o.quantity * pr.price)
+    FROM
+        products as pr
+    INNER JOIN
+        orderlines as o
+    ON
+        o.productid = pr.id
+    WHERE
+      orderid = $1
+    `,
+    [orderId],
+  );
+
   if (!order) {
     return null;
   }
 
-  return order;
+  orderLines['orders'] = order;
+  orderLines['price'] = totalPrice;
+  return orderLines;
 }
 
 export async function listOrderStatus(orderId) {
