@@ -1,3 +1,4 @@
+DROP TABLE IF EXISTS stateChanges;
 DROP TABLE IF EXISTS orderLines;
 DROP TABLE IF EXISTS orderStates;
 DROP TABLE IF EXISTS cartLines;
