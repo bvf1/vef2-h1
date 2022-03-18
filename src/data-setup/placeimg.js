@@ -15,7 +15,7 @@ export class PlaceImg {
   constructor({
     cacheDir, imageDir, logger, token,
   } = {}) {
-    //this.tmdbBasePath = 'https://api.themoviedb.org/3/tv/';
+    // this.tmdbBasePath = 'https://api.themoviedb.org/3/tv/';
 
     if (!cacheDir || !imageDir || !logger || !token) {
       throw new Error('missing required values');

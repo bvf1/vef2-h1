@@ -13,9 +13,7 @@
     "test": "node --experimental-vm-modules node_modules/.bin/jest",
     "test-watch": "node --experimental-vm-modules node_modules/.bin/jest --watch",
     "setup": "node ./src/setup/setup.js",
-    "create-data": "node ./src/data-setup/setup.js",
-    "faker": "node ./src/data-setup/faker.js",
-    "both": "yarn setup && yarn faker"
+    "create-data": "node ./src/data-setup/setup.js"
   },
   "repository": {
     "type": "git",

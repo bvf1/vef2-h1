@@ -80,7 +80,7 @@ export async function listOrder(orderId) {
 }
 
 export async function listOrderStatus(orderId) {
-  console.log("list");
+  console.log('list');
   const orderStatus = await singleQuery(
     `
     SELECT
@@ -142,7 +142,6 @@ export async function insertOrder({
   RETURNING *`;
   const values = [xss(name)];
 
-
   const result = await singleQuery(q, values);
 
   if (result) {
@@ -155,7 +154,7 @@ export async function insertOrder({
 export async function createOrder(req, res) {
   const { name } = req.body;
 
-  const order = await insertOrder({name});
+  const order = await insertOrder({ name });
   console.log(order);
 
   if (!order) return res.status(500).json({ msg: 'category was not created' });

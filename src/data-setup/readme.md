@@ -1,3 +1,3 @@
-# Útbúa CSV gögn fyrir verkefni
+# Útbúa Faker gögn fyrir verkefni
 
-Skaffa þarf token hjá themoviedatabase, setja í .env og keyra `setup.js`.
+Fyrst þarf að keyra `setup.js`.

@@ -1,4 +1,5 @@
 import { test, describe, expect } from '@jest/globals';
+import { logger } from '../utils/logger.js';
 
 import {
   fetchAndParse,
@@ -9,7 +10,12 @@ import {
 } from './utils.js';
 
 // TODO read from .env
-const EXPIRES_IN = '3600';
+const { TOKEN_LIFETIME: expiresIn } = process.env;
+
+if (!expiresIn) {
+  logger.error('Missing TOKEN_LIFETIME from env');
+  process.exit(-1);
+}
 
 describe('users', () => {
   // Random username for all the following tests, highly unlikely we'll create
@@ -121,7 +127,7 @@ describe('users', () => {
     const { result, status } = await postAndParse('/users/login', data);
 
     expect(status).toBe(200);
-    expect(result.expiresIn).toBe(parseInt(EXPIRES_IN, 10));
+    expect(result.expiresIn).toBe(parseInt(expiresIn, 10));
     expect(result.token.length).toBeGreaterThanOrEqual(20); // 20 is random
     expect(result.user.admin).toBe(false);
     expect(result.user.email).toBe(email);

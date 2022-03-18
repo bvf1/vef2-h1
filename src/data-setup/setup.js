@@ -1,73 +1,132 @@
-/* eslint-disable no-await-in-loop */
-import { join, dirname } from 'path';
+// eslint-disable-next-line import/no-extraneous-dependencies
+import pkg from '@faker-js/faker';
 import { fileURLToPath } from 'url';
-
-import dotenv from 'dotenv';
-
-import { prepareDir } from '../utils/fs-helpers.js';
-import { logger } from '../utils/logger.js'
+import { dirname, join } from 'path';
+import { insertCategory, insertProduct } from '../db.js';
+import { logger } from '../utils/logger.js';
 import { PlaceImg } from './placeimg.js';
-import { getImagesFromFaker } from './faker.js';
+import { uploadToCloudinarY } from '../utils/cloudinary.js';
+import { insertOrder } from '../api/orders.js';
 
-dotenv.config();
+const { faker } = pkg;
 
 const CACHE_DIR = './../../.cache';
-const DATA_DIR = './../../data';
 const IMAGE_DIR = './../../data/img';
 
 const path = dirname(fileURLToPath(import.meta.url));
 const resolvedCacheDir = join(path, CACHE_DIR);
 const resolvedImageDir = join(path, IMAGE_DIR);
-const resolvedDataDir = join(path, DATA_DIR);
 
-const { TMDB_TOKEN: tmdbToken } = process.env;
+const { PI_TOKEN: piToken } = process.env;
 
-if (!tmdbToken) {
-  logger.error('Missing TMDB_TOKEN from env');
+if (!piToken) {
+  logger.error('Missing PI_TOKEN from env');
   process.exit(-1);
 }
 
-/**
- * Sækir 20 vinsælustu sjónvarpsþættina á themoviedatabase, sækir síðan öll
- * season fyrir hvern, og að lokum alla þætti í hverju season. Að lokum er allt
- * vistað í CSV skrár.
- * Fyrir myndir, þá er myndin vistuð jafnóðum í myndamöppu og vísað í heiti
- * hennar í gögnum.
- */
-async function main() {
-  const cacheDirResult = await prepareDir(resolvedCacheDir);
-  const imageDirResult = await prepareDir(resolvedImageDir);
-  const dataDirResult = await prepareDir(resolvedDataDir);
+let placeImg;
 
-  if (!cacheDirResult) {
-    logger.error(`Dir "${resolvedCacheDir}" is not writeable`);
+try {
+  placeImg = new PlaceImg({
+    cacheDir: resolvedCacheDir,
+    imageDir: resolvedImageDir,
+    logger,
+    token: piToken,
+  });
+} catch (e) {
+  logger.error('Unable to create placemg instance', e);
+}
+
+function getImageFromFaker() {
+  // const string = `${faker.image.food()}?random=${Math.round(Math.random() * 1000)}`;
+  const string = `${faker.image.food()}random${Math.round(Math.random() * 1000)}`;
+  return string;
+}
+
+export function getImagesFromFaker(n) {
+  const images = [];
+  for (let index = 0; index < n; index += 1) {
+    const result = getImageFromFaker();
+    images.push(result);
   }
 
-  if (!imageDirResult) {
-    logger.error(`Dir "${resolvedImageDir}" is not writeable`);
-  }
+  return images;
+}
 
-  if (!cacheDirResult || !imageDirResult || !dataDirResult) {
-    process.exit(-1);
-  }
+async function getImage() {
+  const imageFromFaker = await getImageFromFaker();
 
-  let placeImg;
-  try {
-    placeImg = new PlaceImg({
-      cacheDir: resolvedCacheDir,
-      imageDir: resolvedImageDir,
-      logger,
-      token: tmdbToken,
-    });
-  } catch (e) {
-    logger.error('Unable to create placemg instance', e);
-  }
+  const imageFromPlaceImg = await placeImg.fetchImage(imageFromFaker);
 
-  const numberOfImages = 200;
-  const images = getImagesFromFaker(numberOfImages);
-  for (let i = 0; i < numberOfImages; i++) {
-    conole.log(await placeImg.fetchImage(images[i]));
+  const filepath = `data/img/${imageFromPlaceImg.filename}`;
+
+  const result = await uploadToCloudinarY(filepath);
+  return result;
+}
+
+// catagories and products
+
+const catagoriesNumber = 5;
+const productNumber = 3;
+
+// fake categories
+const categories = [];
+let category;
+for (let i = 0; i < catagoriesNumber; i += 1) {
+  // eslint-disable-next-line no-constant-condition
+  while (true) {
+    category = faker.commerce.department();
+    if (!categories.includes(category)) break;
+  }
+  categories.push(category);
+}
+
+// fake product
+const products = [];
+let product;
+for (let j = 0; j < catagoriesNumber; j += 1) {
+  for (let i = 0; i < productNumber; i += 1) {
+    while (true) {
+      product = faker.commerce.product();
+      if (!products.includes(product)) break;
+    }
+    products.push(product);
   }
 }
 
-main().catch((e) => logger.error(e));
+async function insertIntoProduct(index, cat) {
+  const result = await cat;
+
+  if (result === null) return;
+  const { id } = await cat;
+  const price = parseInt(faker.commerce.price(), 10);
+  const image = await getImage();
+  await insertProduct({
+    title: products[index],
+    price,
+    description: faker.commerce.productDescription(),
+    image,
+    category: id,
+  });
+}
+
+async function insertIntoCategory(i) {
+  const title = categories[i];
+  const result = await insertCategory({ title });
+  return result;
+}
+
+let cd = 0;
+for (let i = 0; i < catagoriesNumber; i += 1) {
+  const result = insertIntoCategory(i);
+  for (let j = 0; j < productNumber; j += 1) {
+    insertIntoProduct(cd, result);
+    cd += 1;
+  }
+}
+
+for (let index = 0; index < 2; index++) {
+  const noun = faker.hacker.noun();
+  console.log(noun);
+  insertOrder({ name: noun });
+}
