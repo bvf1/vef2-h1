@@ -156,7 +156,7 @@ export async function updateCartLine(_, req, res, { params = {} } = {}) {
     const updatedCartLine = await singleQuery(
       `
         UPDATE
-          cartline
+          cartlines
         SET
           quantity = $1
         WHERE
