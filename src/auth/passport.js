@@ -11,7 +11,7 @@ import { findById } from './users.js';
 const { JWT_SECRET: jwtSecret, TOKEN_LIFETIME: tokenLifetime = 3600 } = process.env;
 
 if (!jwtSecret) {
-  console.error('Vantar .env gildi');
+  console.error('Vantar .env gildi jwtSecret');
   process.exit(1);
 }
 
