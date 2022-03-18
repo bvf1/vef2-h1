@@ -285,7 +285,7 @@ Allar niðurstöður sem geta skilað mörgum færslum (fleiri en 10) skulu skil
 Ekki þarf að útfæra „týnt lykilorð“ virkni.
 
 Setja skal upp vefinn á Heroku tengt við GitHub með Heroku postgres settu upp.
-
+heroku config:set JWT_SECRET='mysecret!@'
 ## Sýnilausn
 
 Sýnilausn er keyrandi á:
