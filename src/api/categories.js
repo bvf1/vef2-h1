@@ -1,22 +1,12 @@
-import xss from 'xss';
 import {
-  query,
-  singleQuery,
   pagedQuery,
-  deleteQuery,
-  conditionalUpdate,
   insertCategory,
-  insertProduct,
-  listCategoryNames,
   listCategoryById,
   deleteCategory,
   listProductsByCategory,
   updateCategory,
 } from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
-import { uploadImage } from '../utils/cloudinary.js';
-import { logger } from '../utils/logger.js';
-import { listOrders } from './orders.js';
 
 export async function listCategories(req, res) {
   const { offset = 0, limit = 10 } = req.query;
@@ -61,7 +51,7 @@ export async function patchCategory(req, res) {
   return res.status(500).json(null);
 }
 
-export async function listCategory(req, res) {
+export async function listCategory(req) {
   const id = req;
 
   const category = await listCategoryById({ id });

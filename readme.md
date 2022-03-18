@@ -81,10 +81,6 @@ Ekki þarf að útfæra nema eina leið í gegnum stöður, þ.e.a.s. ekki er h�
 
 ## Gögn
 
-Ekki eru gefin gögn til að vinna með. Þið ákveðið og útfærið eigin gögn sem sett eru inn í byrjun. Þetta geta verið plat gögn (t.d. með því að nota [faker](https://github.com/faker-js/faker)) eða gögn frá ykkar uppáhalds veitingstað.
-
-Í byjun verða að vera a.m.k. fimm mismunandi flokkar (með a.m.k. þrem vörum í) og a.m.k. 15 vörur.
-
 Útbúa skal a.m.k. tvær pantanir með mismunandi stöður í kerfinu.
 
 ## Vefþjónustur
@@ -108,13 +104,11 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
 - `/menu`
   - `GET` Skilar síðu af vörum á matseðli raðað í dagsetningar röð, nýjustu vörur fyrst
 
-  > curl -H 'Accept: application/json' http://localhost:3001/menu
+  > curl -H 'Accept: application/json' bih1.herokuapp.com/menu
 
   - `POST` býr til nýja vöru á matseðil ef hún er gild og notandi hefur rétt til að búa til vöru, aðeins ef notandi sem framkvæmir er stjórnandi
 
-  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDY4MDQxLCJleHAiOjE2NDc4MjgwNDF9.kDRdrgHSFxD9sCtGf6VgnY3yZOL3PiTXPAXyB29Zx9k" -d '{ "title": "apple", "price": 15, "description": "red apple", "category": "fruit"}'  http://localhost:3001/menu
-
-  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDgxNzI3LCJleHAiOjM3NjQ3NDgxNzI3fQ.2sJld_ZSo_S-2CfWzi2J3PXQcFrFP3OrhoZ446DK9-8" -F "title=banana" -F "price=15" -F "description=red apple" -F "image=@/home/bvf/programming/vef/fo.jpg" -F "category=Garden" http://localhost:3001/menu
+  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NjMxNzg5LCJleHAiOjE2NDc2MzUzODl9.U08xVUvDlXA6S7GjiONjwIKJ8stCBPp3ORIPv_3pWJY" -F "title=banana" -F "price=15" -F "description=red apple" -F "image=@/home/bvf/programming/vef/fo.jpg" -F "category=Garden" bih1.herokuapp.com/menu
 
   - Tekið er við gögnum sem `form data` þar sem bæði mynd og gögn eru send inn
 
@@ -124,41 +118,41 @@ Ef beðið er um einingu eða reynt að framkvæma aðgerð sem ekki er leyfi fy
   - `GET` Skilar síðu af vörum þar sem `{query}` er í titli eða lýsingu, raðað í dagsetningar röð, nýjustu vörur fyrst
   - Það er hægt að senda bæði `search` og `category` í einu
 
-  > curl -G -d 'search=Garden' -d 'description=pp' http://localhost:3001/menu
+  > curl -G -d 'search=Garden' -d 'description=pp' bih1.herokuapp.com/menu
 
 - `/menu/:id`
   - `GET` sækir vöru
 
-  > curl -H 'Accept: application/json' http://localhost:3001/menu/5
-curl -H 'Accept: application/json' http://localhost:3001/menu/5
+  > curl -H 'Accept: application/json' bih1.herokuapp.com/menu/5
+curl -H 'Accept: application/json' bih1.herokuapp.com/menu/5
   - `PATCH` uppfærir vöru, aðeins ef notandi sem framkvæmir er stjórnandi
 
-  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDgxNzI3LCJleHAiOjM3NjQ3NDgxNzI3fQ.2sJld_ZSo_S-2CfWzi2J3PXQcFrFP3OrhoZ446DK9-8" -F "title=milk" -F "category=Garden" -X PATCH http://localhost:3001/menu/3
+  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NjMxNzg5LCJleHAiOjE2NDc2MzUzODl9.U08xVUvDlXA6S7GjiONjwIKJ8stCBPp3ORIPv_3pWJY" -F "title=milk" -F "category=Garden" -X PATCH bih1.herokuapp.com/menu/3
 
 
   - `DELETE` eyðir vöru, aðeins ef notandi sem framkvæmir er stjórnandi
 
-  > url  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDU2Nzc1LCJleHAiOjE2NDc4MTY3NzV9.8NIm8jESlzjJO49smsvCusJxLSpICEJuILYhsG0SgOk" -X DELETE http://localhost:3001/menu/15
+  > url  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDU2Nzc1LCJleHAiOjE2NDc4MTY3NzV9.8NIm8jESlzjJO49smsvCusJxLSpICEJuILYhsG0SgOk" -X DELETE bih1.herokuapp.com/menu/15
 
 - `/categories`
   - `GET` skilar síðu af flokkum
 
-    > curl -H 'Accept: application/json' http://localhost:3001/categories
+    > curl -H 'Accept: application/json' bih1.herokuapp.com/categories
 
   - `POST` býr til flokk ef gildur og skilar, aðeins ef notandi sem framkvæmir er stjórnandi
 
-  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDY4MDQxLCJleHAiOjE2NDc4MjgwNDF9.kDRdrgHSFxD9sCtGf6VgnY3yZOL3PiTXPAXyB29Zx9k" -d '{ "title": "appliances"}'  http://localhost:3001/categories
+  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDY4MDQxLCJleHAiOjE2NDc4MjgwNDF9.kDRdrgHSFxD9sCtGf6VgnY3yZOL3PiTXPAXyB29Zx9k" -d '{ "title": "appliances"}'  bih1.herokuapp.com/categories
 
 - `/categories/:id`
 
   - `PATCH` uppfærir flokk, aðeins ef notandi sem framkvæmir er stjórnandi
 
-  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDU2Nzc1LCJleHAiOjE2NDc4MTY3NzV9.8NIm8jESlzjJO49smsvCusJxLSpICEJuILYhsG0SgOk" -d '{ "title": "vegetables"}' -X PATCH http://localhost:3001/categories/1
+  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDU2Nzc1LCJleHAiOjE2NDc4MTY3NzV9.8NIm8jESlzjJO49smsvCusJxLSpICEJuILYhsG0SgOk" -d '{ "title": "vegetables"}' -X PATCH bih1.herokuapp.com/categories/1
 
   - `DELETE` eyðir flokk, aðeins ef notandi sem framkvæmir er stjórnandi
 
 
-  > curl  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDU2Nzc1LCJleHAiOjE2NDc4MTY3NzV9.8NIm8jESlzjJO49smsvCusJxLSpICEJuILYhsG0SgOk" -X DELETE http://localhost:3001/categories/5
+  > curl  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDU2Nzc1LCJleHAiOjE2NDc4MTY3NzV9.8NIm8jESlzjJO49smsvCusJxLSpICEJuILYhsG0SgOk" -X DELETE bih1.herokuapp.com/categories/5
 
 ### Karfa, vefþjónustur
 
@@ -178,12 +172,12 @@ curl -H 'Accept: application/json' http://localhost:3001/menu/5
 
   - `POST` býr til pöntun með viðeigandi gildum, skilar stöðu á pöntun og auðkenni
 
-  > curl -vH "Content-Type: application/json" -d '{"name": "fine"}' http://localhost:3001/orders
+  > curl -vH "Content-Type: application/json" -d '{"name": "fine"}' bih1.herokuapp.com/orders
 
 - `/orders/:id`
   - `GET` skilar pöntun með öllum línum, gildum pöntunar, stöðu pöntunar og reiknuðu heildarverði körfu
 
-  > -H 'Accept: application/json' http://localhost:3001/orders/85619a86-8cc3-49fb-8444-c1220c4c78c8
+  > -H 'Accept: application/json' bih1.herokuapp.com/orders/85619a86-8cc3-49fb-8444-c1220c4c78c8
 
 
 - `/orders/:id/status`
@@ -196,41 +190,41 @@ curl -H 'Accept: application/json' http://localhost:3001/menu/5
 
   - `GET` skilar síðu af notendum, aðeins ef notandi sem framkvæmir er stjórnandi
 
-  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3MzQ4OTk2LCJleHAiOjE2NDczNTI1OTZ9.FdyUQhkT0NsydoafKrNUPdRbvhoCImOuQ42jqWQNE30" http://localhost:3001/users
+  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NjMxNzg5LCJleHAiOjE2NDc2MzUzODl9.U08xVUvDlXA6S7GjiONjwIKJ8stCBPp3ORIPv_3pWJY" bih1.herokuapp.com/users
 
 - `/users/:id`
 
   - `GET` skilar notanda, aðeins ef notandi sem framkvæmir er stjórnandi
 
-  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NDgxNzI3LCJleHAiOjM3NjQ3NDgxNzI3fQ.2sJld_ZSo_S-2CfWzi2J3PXQcFrFP3OrhoZ446DK9-8" http://localhost:3001/users/1
+  > curl -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NjMxNzg5LCJleHAiOjE2NDc2MzUzODl9.U08xVUvDlXA6S7GjiONjwIKJ8stCBPp3ORIPv_3pWJY" bih1.herokuapp.com/users/1
 
   - `PATCH` breytir hvort notandi sé stjórnandi eða ekki, aðeins ef notandi sem framkvæmir er stjórnandi og er ekki að breyta sér sjálfum
 
-  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3MzUzMDk2LCJleHAiOjE2NDczNTY2OTZ9.xg9CQssTbZRFRFvWdy7pkY698Xo-ea5-jaFR3pPow04" -d '{ "admin": "true"}' -X PATCH http://localhost:3001/users/2
+  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NjMxNzg5LCJleHAiOjE2NDc2MzUzODl9.U08xVUvDlXA6S7GjiONjwIKJ8stCBPp3ORIPv_3pWJY" -d '{ "admin": "true"}' -X PATCH bih1.herokuapp.com/users/2
 
 - `/users/register`
 
   - `POST` staðfestir og býr til notanda. Skilar auðkenni og netfangi. Notandi sem búinn er til skal aldrei vera stjórnandi
 
-  > curl -vH "Content-Type: application/json" -d '{"username": "Tommi Tómatur","email": "tommi@tomatur.is","password": "1234567890"}' http://localhost:3001/users/register
+  > curl -vH "Content-Type: application/json" -d '{"username": "Tommi Tómatur","email": "tommi@tomatur.is","password": "1234567890"}' bih1.herokuapp.com/users/register
 
 - `/users/login`
 
   - `POST` með netfangi (eða notandanafni) og lykilorði skilar token ef gögn rétt
 
-  > curl -vH "Content-Type: application/json" -d '{ "username": "admin", "password": "1234567890"}' POST http://localhost:3001/users/login
+  > curl -vH "Content-Type: application/json" -d '{ "username": "admin", "password": "1234567890"}' POST bih1.herokuapp.com/users/login
 
-"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3MzQ0MDcxLCJleHAiOjE2NDczNDc2NzF9.CFsKbGNmVFASOFO4CVL20OvkLIATz7dwW_6klYLy9cc"
+"token":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NjMxNzg5LCJleHAiOjE2NDc2MzUzODl9.U08xVUvDlXA6S7GjiONjwIKJ8stCBPp3ORIPv_3pWJY"
 
 - `/users/me`
 
   - `GET` skilar upplýsingum um notanda sem á token, auðkenni og netfangi, aðeins ef notandi innskráður
 
-  > curl -H 'Accept: application/json' "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3MzQ0MDcxLCJleHAiOjE2NDczNDc2NzF9.CFsKbGNmVFASOFO4CVL20OvkLIATz7dwW_6klYLy9cc" http://localhost:3001/users/me
+  > curl -H 'Accept: application/json' "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NjMxNzg5LCJleHAiOjE2NDc2MzUzODl9.U08xVUvDlXA6S7GjiONjwIKJ8stCBPp3ORIPv_3pWJY" bih1.herokuapp.com/users/me
 
   - `PATCH` uppfærir netfang, lykilorð eða bæði ef gögn rétt, aðeins ef notandi innskráður
 
-  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3MzQ4OTk2LCJleHAiOjE2NDczNTI1OTZ9.FdyUQhkT0NsydoafKrNUPdRbvhoCImOuQ42jqWQNE30" -d '{ "email": "admin@admin.org"}' -X PATCH http://localhost:3001/users/me
+  > curl -H "Content-Type: application/json" -H 'Accept: application/json' -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjQ3NjMxNzg5LCJleHAiOjE2NDc2MzUzODl9.U08xVUvDlXA6S7GjiONjwIKJ8stCBPp3ORIPv_3pWJY" -d '{ "email": "admin@admin.org"}' -X PATCH bih1.herokuapp.com/users/me
 
 Aldrei skal skila eða sýna hash fyrir lykilorð.
 
@@ -242,14 +236,6 @@ Stjórnendur/starfsfólk veitingastaðs geta einnig tengst WebSocket þjón og s
 
 Ekki er gerð krafa um að sambandi milli client og server sé viðhaldið og endurvakið ef eitthvað kemur upp.
 
-## Myndir
-
-Allar myndir skal geyma í [Cloudinary](https://cloudinary.com/) eða [imgix](https://imgix.com/), bæði þær sem settar eru upp í byrjun og þær sem sendar eru inn gegnum vefþjónustu.
-
-Aðeins ætti að leyfa myndir af eftirfarandi tegundum (`mime type`):
-
-- jpg, `image/jpeg`
-- png, `image/png`
 
 ## Notendaumsjón
 
@@ -268,7 +254,7 @@ Nota skal JWT með passport og geyma notendur i gagnagrunni. Útfæra þarf auð
 
 ## Tæki, tól og test
 
-Setja skal upp eslint fyrir JavaScript. Engar villur skulu koma fram ef npm run lint er keyrt. Leyfilegt er að skilgreina hvaða reglusett er notað, ekki er krafa um að nota það sem hefur verið notað í öðrum verkefnum.
+Engar villur skulu koma fram ef npm run lint er keyrt.
 
 Setja skal upp jest til að skrifa test. Skrifa skal test fyrir a.m.k.:
 

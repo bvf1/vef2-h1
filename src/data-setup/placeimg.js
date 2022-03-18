@@ -2,7 +2,6 @@ import { basename, join } from 'path';
 
 import fetch from 'node-fetch';
 
-import { createLogger } from 'winston';
 import { slugify } from '../utils/slugify.js';
 import { exists, readFile, writeFile } from '../utils/fs-helpers.js';
 

@@ -8,6 +8,7 @@ import fetch from 'node-fetch';
 import FormData from 'form-data';
 
 import { stat } from '../utils/fs-helpers';
+import { logger } from '../utils/logger';
 
 const basePath = dirname(fileURLToPath(import.meta.url));
 
@@ -95,7 +96,7 @@ export async function deleteAndParse(path, data, token = null) {
 
 export async function loginAndReturnToken(data) {
   const { result } = await postAndParse('/users/login', data);
-
+  logger.debug("loginparse",result.token);
   if (result && result.token) {
     return result.token;
   }

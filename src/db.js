@@ -139,7 +139,7 @@ export async function insertCategory({
   return null;
 }
 
-export async function deleteCategory({ title, id }) {
+export async function deleteCategory({ id }) {
   const q = `
     DELETE FROM
       categories

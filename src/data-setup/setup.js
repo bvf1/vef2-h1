@@ -86,6 +86,7 @@ const products = [];
 let product;
 for (let j = 0; j < catagoriesNumber; j += 1) {
   for (let i = 0; i < productNumber; i += 1) {
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       product = faker.commerce.product();
       if (!products.includes(product)) break;
@@ -125,8 +126,7 @@ for (let i = 0; i < catagoriesNumber; i += 1) {
   }
 }
 
-for (let index = 0; index < 2; index++) {
+for (let index = 0; index < 2; index += 1) {
   const noun = faker.hacker.noun();
-  console.log(noun);
   insertOrder({ name: noun });
 }

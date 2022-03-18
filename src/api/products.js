@@ -1,22 +1,16 @@
 import xss from 'xss';
 import {
-  query,
   pagedQuery,
-  insertCategory,
   insertProduct,
-  listCategoryNames,
   listCategoryByTitle,
-  singleQuery,
   listCategoryById,
   conditionalUpdate,
   deleteProduct,
-  listProduct,
 } from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { uploadImage, uploadToCloudinarY } from '../utils/cloudinary.js';
 import { isString } from '../utils/isString.js';
 import { logger } from '../utils/logger.js';
-import { listOrders } from './orders.js';
 
 export async function listProducts(req, res) {
   const { search, description } = req.query;
@@ -84,7 +78,7 @@ export async function createProduct(req, res) {
   return res.status(201).json(product);
 }
 
-export async function listCategory(req, res) {
+export async function listCategory(req) {
   const id = req;
 
   const category = await listCategoryById({ id });

@@ -9,7 +9,6 @@ import {
 import { resourceExists } from './helpers.js';
 import { LoginError } from '../errors.js';
 import { logger } from '../utils/logger.js';
-import { listProducts } from '../api/products.js';
 import { listCategoryNames, listProductNames } from '../db.js';
 
 /**

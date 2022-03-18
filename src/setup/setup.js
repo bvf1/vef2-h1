@@ -1,16 +1,12 @@
 /* eslint-disable no-await-in-loop */
-import fs from 'fs';
 import { join, dirname, extname } from 'path';
 import { fileURLToPath } from 'url';
-
-import csvParser from 'csv-parser';
 
 import { logger } from '../utils/logger.js';
 import { readDir, readFile, stat } from '../utils/fs-helpers.js';
 import { query, end } from '../db.js';
 import { listImages, uploadImage } from '../utils/cloudinary.js';
 
-const DATA_DIR = './../../data';
 const IMG_DIR = './../../data/img';
 const SQL_DIR = './../../sql';
 
@@ -80,11 +76,11 @@ async function images() {
  */
 async function main() {
   await images();
-  console.log('Images uploaded');
+  logger.info('Images uploaded');
   await schema();
-  console.log('Schema created');
+  logger.info('Schema created');
   await postSchemaSql();
-  console.log('Post schema SQL run');
+  logger.info('Post schema SQL run');
   await end();
 }
 

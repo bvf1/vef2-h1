@@ -48,8 +48,10 @@ async function loginRoute(req, res) {
   const token = jwt.sign(payload, jwtOptions.secretOrKey, tokenOptions);
   delete user.password;
 
-  return res.json({
+  return res.status(200).json({
+    user,
     token,
+    expiresIn: tokenOptions.expiresIn,
   });
 }
 

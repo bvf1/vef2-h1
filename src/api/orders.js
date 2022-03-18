@@ -1,5 +1,7 @@
 import xss from 'xss';
-import { pagedQuery, singleQuery, query, insertStateChange } from '../db.js';
+import {
+  pagedQuery, singleQuery, query, insertStateChange,
+} from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { logger } from '../utils/logger.js';
 

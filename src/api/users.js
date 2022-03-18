@@ -25,7 +25,7 @@ export async function listUsers(req, res) {
   return res.json(usersWithPage);
 }
 
-export async function listUser(req, res) {
+export async function listUser(req) {
   const id = req;
 
   const q = `
