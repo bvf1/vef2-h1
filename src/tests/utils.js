@@ -120,6 +120,19 @@ export async function createRandomUserAndReturnWithToken() {
   };
 }
 
+export async function createRandomOrder() {
+  const rnd = randomValue();
+  const id = '08626326-a55f-11ec-b909-0242ac120002';
+  const name = `Order ${rnd}`;
+
+  const data = { id, name };
+  const { result } = await postAndParse('/orders', data);
+
+  return {
+    order: result,
+  };
+}
+
 export async function loginAsHardcodedAdminAndReturnToken() {
   const token = await loginAndReturnToken({
     username: adminUser,
