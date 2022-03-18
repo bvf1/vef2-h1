@@ -1,5 +1,5 @@
 import xss from 'xss';
-import { pagedQuery, singleQuery, query } from '../db.js';
+import { pagedQuery, singleQuery, query, insertStateChange } from '../db.js';
 import { addPageMetadata } from '../utils/addPageMetadata.js';
 import { logger } from '../utils/logger.js';
 
@@ -80,7 +80,6 @@ export async function listOrder(orderId) {
 }
 
 export async function listOrderStatus(orderId) {
-  console.log('list');
   const orderStatus = await singleQuery(
     `
     SELECT
@@ -100,6 +99,20 @@ export async function listOrderStatus(orderId) {
   if (!orderStatus) {
     return null;
   }
+
+  const orderChanges = await query(
+    `
+    SELECT
+      *
+    FROM
+        statechanges
+    WHERE
+        orderid = $1
+    `,
+    [orderId],
+  );
+
+  orderStatus.changes = orderChanges;
 
   return orderStatus;
 }
@@ -121,6 +134,8 @@ export async function updateOrderStatus(req, res) {
       `,
       [status, orderId],
     );
+
+    insertStateChange(orderId, status);
     return res.status(200).json(updatedStatus);
   } catch (e) {
     logger.error(
@@ -155,7 +170,6 @@ export async function createOrder(req, res) {
   const { name } = req.body;
 
   const order = await insertOrder({ name });
-  console.log(order);
 
   if (!order) return res.status(500).json({ msg: 'category was not created' });
 

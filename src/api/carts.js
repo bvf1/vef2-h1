@@ -124,29 +124,87 @@ export async function removeCart(req) {
   return null;
 }
 
-export async function listCartLine(req) {
-  console.log(here);
-  const { cart, line } = req.params;
-  console.log(cart, line);
+export async function listCartLine(_, { params = {} } = {}) {
+  const { id, lineid } = params;
 
-  const cartLines = await query(
+  const cartLine = await singleQuery(
     `
     SELECT
       *
     FROM
-        cartlines
+        cartlines as cl
+    INNER JOIN
+        products as pr
+    ON
+        cl.cartid = $1
     WHERE
-        cartid = $1
+        cl.lineid = $2
+    AND
+        cl.productid = pr.id
     `,
-    [cartId, id],
+    [id, lineid],
   );
-  return cartLines;
+
+  return cartLine;
 }
 
-export async function updateCartLine(req, res) {
-  return null;
+export async function updateCartLine(_, req, res, { params = {} } = {}) {
+  const { id, lineid } = params;
+  const { number } = req.body;
+
+  try {
+    const updatedCartLine = await singleQuery(
+      `
+        UPDATE
+          cartlines
+        SET
+          quantity = $1
+        WHERE
+          cartid = $2
+        AND
+          lineid = $3
+        RETURNING
+          lineid, productid, cartid, quantity
+      `,
+      [number, id, lineid],
+    );
+    return res.status(200).json(updatedCartLine);
+  } catch (e) {
+    logger.error(
+      `unable to change quantity to "${number}" for cartline "${lineid}"`,
+      e,
+    );
+  }
+
+  return res.status(500).json(null);
 }
 
-export async function removeCartLine(req, res) {
+export async function removeCartLine(_, { params = {} } = {}) {
+  const { id, lineid } = params;
+
+  const q = `
+    DELETE FROM
+      cartlines
+    WHERE
+      cartid = $1
+    AND
+      lineid = $2
+  `;
+  const values = [id, lineid];
+
+  try {
+    const deletionRowCount = await deleteQuery(q, values);
+
+    if (deletionRowCount === 0) {
+      return id;
+    }
+    return null;
+  } catch (e) {
+    logger.error(
+      `unable to delete cartline ${lineid} from cart ${id}`,
+      e,
+    );
+  }
+
   return null;
 }

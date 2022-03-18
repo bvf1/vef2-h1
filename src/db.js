@@ -94,6 +94,28 @@ export async function end() {
 }
 
 /**
+ * Insert a state change
+ */
+export async function insertStateChange({
+  orderid, newstate,
+}) {
+  const q = `
+    INSERT INTO statechanges
+    (orderid, newstate)
+    VALUES ($1, $2)
+    RETURNING *`;
+  const values = [orderid, xss(newstate)];
+  try {
+    const result = await query(q, values);
+    return result.rows[0];
+  } catch (e) {
+    logger.error('Error inserting state change', e);
+  }
+
+  return null;
+}
+
+/**
  * Insert a category
  * @param {Category} category Category to create
  * @returns {Category} Category created, with ID

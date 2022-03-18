@@ -188,6 +188,7 @@ router.get(
 
 router.patch(
   '/cart/:id/line/:lineid',
+  numberValidator,
   validateResourceExists(listCartLine),
   validationCheck,
   catchErrors(updateCartLine),
