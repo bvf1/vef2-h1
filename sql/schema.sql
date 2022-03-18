@@ -80,20 +80,21 @@ CREATE TABLE users (
   updated TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT current_timestamp
 );
 
-/*
 INSERT INTO carts (id) VALUES ('36d55556-a55f-11ec-b909-0242ac120002');
 INSERT INTO categories (id, title) VALUES (1, 'Farartæki');
 INSERT INTO categories (id, title) VALUES (2, 'Föt');
 INSERT INTO orders (id, name) VALUES ('08626326-a55f-11ec-b909-0242ac120002', 'Order 1');
+INSERT INTO orders (id, name) VALUES ('31da6166-a6ec-11ec-b909-0242ac120002', 'Order 2');
 INSERT INTO products (id, title, price, description, image, category) VALUES (1, 'Hjól', 50, 'Fyrir hjólara', 'https://i.imgur.com/ZZDTdV0.jpg', 1);
 INSERT INTO products (id, title, price, description, image, category) VALUES (2, 'Skór', 10, 'Gengur í þeim', 'https://i.imgur.com/iqKDft8.jpg?1', 2);
 INSERT INTO orderStates (orderID, stateOfOrder) VALUES ('08626326-a55f-11ec-b909-0242ac120002', 'NEW');
 INSERT INTO orderLines (productID, orderID, quantity) VALUES (1, '08626326-a55f-11ec-b909-0242ac120002', 1);
 INSERT INTO orderLines (productID, orderID, quantity) VALUES (2, '08626326-a55f-11ec-b909-0242ac120002', 1);
 INSERT INTO orderLines (productID, orderID, quantity) VALUES (2, '08626326-a55f-11ec-b909-0242ac120002', 2);
+INSERT INTO orderLines (productID, orderID, quantity) VALUES (2, '31da6166-a6ec-11ec-b909-0242ac120002', 10);
 INSERT INTO cartLines (productID, cartID, quantity) VALUES (1, '36d55556-a55f-11ec-b909-0242ac120002', 1);
 INSERT INTO cartLines (productID, cartID, quantity) VALUES (2, '36d55556-a55f-11ec-b909-0242ac120002', 1);
 INSERT INTO cartLines (productID, cartID, quantity) VALUES (2, '36d55556-a55f-11ec-b909-0242ac120002', 2);
-INSERT INTO stateChanges (orderID, stateOfOrder, changed) VALUES ('08626326-a55f-11ec-b909-0242ac120002', 'NEW', '2022-03-17 18:19:19.05235+00');
+INSERT INTO stateChanges (orderID, newState, changed) VALUES ('08626326-a55f-11ec-b909-0242ac120002', 'NEW', '2022-03-17 18:19:19.05235+00');
+INSERT INTO stateChanges (orderID, newState, changed) VALUES ('08626326-a55f-11ec-b909-0242ac120002', 'NEW', '2022-03-17 18:19:19.05235+00');
 INSERT INTO stateChanges (orderID, newState) VALUES ('08626326-a55f-11ec-b909-0242ac120002', 'PREPARE');
-*/
