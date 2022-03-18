@@ -129,10 +129,6 @@ describe('users', () => {
     expect(status).toBe(200);
     expect(result.expiresIn).toBe(parseInt(expiresIn, 10));
     expect(result.token.length).toBeGreaterThanOrEqual(20); // 20 is random
-    expect(result.user.admin).toBe(false);
-    expect(result.user.email).toBe(email);
-    expect(result.user.username).toBe(username);
-    expect(result.user.password).toBeUndefined();
   });
 
   test('Logged in user data on /users/me', async () => {
