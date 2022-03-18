@@ -32,13 +32,7 @@ export function getRandomInt(min, max) {
   return Math.floor(Math.random() * (floorMax - ceilMin) + ceilMin);
 }
 
-export async function methodAndParse(
-  method,
-  path,
-  data = null,
-  token = null,
-  imagePath = null,
-) {
+export async function methodAndParse(method, path, data = null, token = null, imagePath = null) {
   const url = new URL(path, baseUrl);
 
   const options = { headers: {} };
@@ -79,7 +73,7 @@ export async function methodAndParse(
 }
 
 export async function fetchAndParse(path, token = null) {
-  return methodAndParse('GET', path, null, token);
+  return methodAndParse('GET', path, null, token);q
 }
 
 export async function postAndParse(path, data, token = null, imagePath) {
@@ -122,10 +116,9 @@ export async function createRandomUserAndReturnWithToken() {
 
 export async function createRandomOrder() {
   const rnd = randomValue();
-  const id = '08626326-a55f-11ec-b909-0242ac120002';
   const name = `Order ${rnd}`;
 
-  const data = { id, name };
+  const data = { name };
   const { result } = await postAndParse('/orders', data);
 
   return {
