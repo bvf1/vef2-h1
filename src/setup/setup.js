@@ -80,11 +80,11 @@ async function images() {
  */
 async function main() {
   await images();
-  logger.info('Images uploaded');
+  console.log('Images uploaded');
   await schema();
-  logger.info('Schema created');
+  console.log('Schema created');
   await postSchemaSql();
-  logger.info('Post schema SQL run');
+  console.log('Post schema SQL run');
   await end();
 }
 
