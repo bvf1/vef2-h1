@@ -31,15 +31,6 @@ Tilbúinn admin notandi:
 
 
 
-Skil skulu innihalda:
-
-- Slóð á verkefni keyrandi á Heroku
-- Slóð á GitHub repo fyrir verkefni. Dæmatímakennurum skal hafa verið boðið í repo. Notendanöfn þeirra eru:
-  - `MarzukIngi`
-  - `WhackingCheese`
-  - `osk`
-
-
 
 ### Matseðill, vefþjónustur
 
