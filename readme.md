@@ -7,8 +7,8 @@ https://bih1.herokuapp.com/
 ## Nemendur
 Á github
 
---ivarjon
---bvf1
+- ivarjon
+- bvf1
 
 
 ## Notandi
@@ -24,10 +24,10 @@ Tilbúinn admin notandi:
 - velja DATABASE_URL=postgres://:@localhost/h1-test í .env
 
 - keyra
--- npm run setup
--- npm run create data
--- npm run start
--- npm run test
+  - npm run setup
+  - npm run create data
+  - npm run start
+  - npm run test
 
 
 
