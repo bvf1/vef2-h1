@@ -5,9 +5,10 @@
 https://bih1.herokuapp.com/
 
 ## Nemendur
+Á github
 
-ivarjon
-bvf1
+--ivarjon
+--bvf1
 
 
 ## Notandi
